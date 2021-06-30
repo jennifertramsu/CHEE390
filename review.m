@@ -24,3 +24,27 @@
 %%
 %%%%% CHAPTER 2 - Creating Arrays
 
+% Manually
+% Row vectors are separated by spaces or commas
+% Column vectors are separated by semi-colons or by pressing enter
+
+% Code
+% row_vector = [m:q:n] = m:q:n
+% --> where m = first, q = spacing (default 1, if omitted), n = last
+% row_vector = linspace(first, last, #elements)
+% --> #elements default is 100
+
+% 2D arrays
+% row vectors, separated by ;
+disp("Creating a 2D matrix")
+matrix = [1 2 3; 4 5 6; 7 8 9]
+
+% Commands
+% --> zeros(m, n) - zero matrix
+% --> ones (m, n) - ones matrix
+% --> eye(n) - identity matrix
+% --> m = row, n = column
+
+% Transpose
+% --> apply ' after the variable
+% --> switches rows and columns in matrices
