@@ -5,4 +5,5 @@
 <ul>
     <li> Source control setup is complete </li>
     <li> All git commands must begin with ! </li>
+    <li> Live scripts are beautiful </li>
 </ul>
