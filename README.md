@@ -1,5 +1,5 @@
 # CHEE390
-<p> Class projects, assignments, and notes. </p>
+<p> Class notes and resources. </p>
 
 ## Notes so future-me doesn't forget
 <ul>
