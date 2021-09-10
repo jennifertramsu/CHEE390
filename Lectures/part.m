@@ -1,5 +1,9 @@
 function v=part(v, left, right)
 
+if right == left
+    return
+end
+
 i = left;
 pivot = right;
 tmp = v(pivot);
@@ -13,5 +17,11 @@ while i < pivot
     end
     i = i+1;
 end
-% write in recursion
+
+% recursion for smaller array
+v = part(v, left, pivot-1);
+
+% recursion for larger array
+v = part(v, pivot, right);
+
 end
