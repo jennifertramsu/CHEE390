@@ -2,6 +2,7 @@
 % Jennifer Tram Su 260923530
 
 function sortmatrix(v)
+% GIVE CREDIT?
 % v = 3D matrix (row, col, page)
 
 % This function will implement the quicksort algorithm on a 3D matrix of
@@ -23,6 +24,13 @@ function sortmatrix(v)
 % (2) use quicksort to sort 1D array
 % (3) turn 1D array back into plane?
 % nvm we want in-place sorting
+
+% other partitioning methods
+% two indices
+% on left of pivot, find value that's large
+% on right, find value that's smaller
+% swap the two
+% --> more efficient
 
 % Step 2 - Calling Quicksort for each page
 end

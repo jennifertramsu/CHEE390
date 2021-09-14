@@ -1,5 +1,7 @@
 function v=part(v, left, right)
-
+% v = array to be sorted
+% left = left index, first index to be sorted
+% right = right index, last index to be sorted
 if right == left
     return
 end
@@ -9,11 +11,11 @@ pivot = right;
 tmp = v(pivot);
 % partitioning
 while i < pivot
-    while v(i) > tmp
-        v(pivot) = v(i);
-        v(i) = v(pivot-1);
-        v(pivot-1) = tmp;
-        pivot = pivot-1;
+    while v(i) > tmp % comparing current value to value at pivot
+        v(pivot) = v(i); % place value where pivot is
+        v(i) = v(pivot-1); % changing value to be compared (value in front of pivot)
+        v(pivot-1) = tmp; % moving value at pivot down by one
+        pivot = pivot-1; % moving pivot down
     end
     i = i+1;
 end
