@@ -1,8 +1,9 @@
 % Assignment 1
 % Jennifer Tram Su 260923530
 
-function quicksort(v, l, r)
-% v = 3D matrix
+function sortmatrix(v)
+% v = 3D matrix (row, col, page)
+
 % This function will implement the quicksort algorithm on a 3D matrix of
 % any dimension in 2 steps
 % Step 1 = Sort the matric by rearranging the 2 planes such that the plane
@@ -14,4 +15,16 @@ function quicksort(v, l, r)
 
 % Step 2 = sort each plane
 
+% Step 1
+
+% NOTES
+% implementing quicksort 
+% (1) turn plane into 1D array
+% (2) use quicksort to sort 1D array
+% (3) turn 1D array back into plane?
+% nvm we want in-place sorting
+
+% Step 2 - Calling Quicksort for each page
 end
+
+% helper functions
