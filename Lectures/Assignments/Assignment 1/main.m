@@ -11,14 +11,7 @@ end
 lst = sortrows(lst); % sorts rows based on the first element (sum), ascending order
 indices = lst(:, 2); % grabbing original indices of plane
 
-for i=1:length(indices)
-    
-    if indices(i) < i % already swapped
-        continue
-    end
-    
-    M = swappages(M, i, indices(i));
-end
+M = reorderpages(M, indices);
 
 end
 
