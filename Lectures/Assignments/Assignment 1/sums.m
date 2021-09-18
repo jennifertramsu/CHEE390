@@ -19,11 +19,12 @@ if ~isreal(M)
     error('Imaginary values in matrix') % Check if matrix has imaginary components
 end
 
-s = 0 % Initialize sum variable
+s = 0; % Initialize sum variable
 
 for i = 1:x % loop over matrix rows
-    s = s + M(i, i) % Add diagonal value to sum variable
+    s = s + M(i, i); % Add diagonal value to sum variable
 end 
+
 end 
 
 
