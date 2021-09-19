@@ -93,8 +93,7 @@ end
 i = left;
 j = right;
 s = right - left + 1; % can't use length for subarrays
-pivot = left + ceil(s*rand(1)) - 1; % must subtract one to avoid going out of bounds
-% pivot = left + floor(s*rand(1)); % avoiding ^
+pivot = left + floor(s*rand(1)); 
 
 piv = v(pivot);
 
