@@ -3,47 +3,64 @@
 function [r, nrf] = incsearch(fun, xi, xf, dxo, tol)
 % Finds all roots in interval [xi xf]
 
-
-
-xold = xi;
+xi = xi-dxo; % Accounting for floating-point errors at beginning of interval
+xold = xi + dxo;
+xnew = xold;
 yold = feval(fun, xi);
-xnew = xi;
+xft = xf + dxo;
 nrf = 0; % keeping track of # roots
+r = zeros(1000, 1); % Initialize more than you need! Saves computational time
 
-if yold == 0
-    nrf = nrf + 1;
-    r(nrf) = xold;
-    xold = xold + eps; % avoid using eps, too small
-    yold = feval(fun, xold);
-end
+%if yold == 0 % Found root
+%    nrf = nrf + 1; % Updating # roots found
+%    r(nrf) = xold; % Saving x-value where root was found
+%    xold = xold + eps; % Stepping over (avoid using eps, too small)
+%    yold = feval(fun, xold); % Next y-value
+%end
 
-% initialize more than you need! saves computational time
-
-while xnew <= xf
-    dx = dxo;
+while xnew <= xft % Before we reach end of interval
+    dx = dxo; % Reset x-increment, otherwise increment will be really small
+    dyold = 1e12;
+    sing=0;
     
-    while tol < dx && xnew <= xf
-        xnew = xold + dx;
-        ynew = feval(fun, xnew);
-        if ynew == 0
+    while tol < dx && xnew <= xft % While we haven't reached tolerance or end of interval
+        xnew = xold + dx; % Increment x
+        ynew = feval(fun, xnew); % New y-value
+        if ynew == 0 % If root found
             break
-        elseif sign(ynew * yold) == 1 || sign(ynew * yold) == 0
+        elseif sign(ynew * yold) == 1 || sign(ynew * yold) == 0 % No root found, step over
             xold = xnew;
             yold = ynew;
-        else
-            dx = dx/10; % sign change
+        else % Root between y-old and y-new
+            %dx = dx/10; % Sign change, decrease increment and continue searching
+            dy = abs(yold - ynew);
+            if dy > dyold % Checking for singularities
+                sing = 1;
+                break
+            end
+            dx = dx / 10;
         end
     end
-    
+    % When root is found, breaking out of while-loop
     xold = xnew;
     yold = feval(fun, xold);
     
-    if ynew == 0 || dx <= tol
+    if sing == 0 && xnew <= xft
         nrf = nrf + 1;
         r(nrf) = xnew;
-        if xold > xf
-            r(nrf) = [];
-            nrf = nrf - 1;
-        end
+        xold = xnew + tol;
     end
+    
+    %if ynew == 0 || dx <= tol
+    %    nrf = nrf + 1;
+    %    r(nrf) = xnew;
+    %    if xold > xf % Found root outside of interval
+    %        r(nrf) = [];
+    %        nrf = nrf - 1;
+    %    end
+    %end
+end
+
+r(nrf + 1: end) = [];
+
 end
