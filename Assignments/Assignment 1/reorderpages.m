@@ -4,7 +4,7 @@ function N = reorderpages(M, indices)
 % indices = array containing original indices of pages where its current
 % index is its new position
 
-[x y z] = size(M);
+[x, y, z] = size(M);
 N = zeros(x, y, z);
 
 for i = 1:length(indices)
