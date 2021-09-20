@@ -35,17 +35,12 @@ M = reorderpages(M, indices);
 
 % Quicksort each page
 
-
 for i = 1:z % loop over matrix's planes
     page = M(:, :, i); % Get the individual plane of matrix M
     
     [x, y] = size(page); % Get the dimensions for the plane
-    
-    A = reshape(page, 1, x*y); % Transform the plane into a 1D array
-    
-    A = quicksort(page, 1, x*y); % Call quicksort on the array, bounded between 1 and the number of elements 
-    
-    M(:, :, i) = reshape(A, x, y)'; % Re-assign the new sorted array to the original matrix M
+
+    M(:, :, i) = quicksort(page, 1, x*y)'; % Call quicksort on the array, bounded between 1 and the number of elements 
 end
 
 end
@@ -84,7 +79,7 @@ end
 end
 
 function v=quicksort(v, left, right)
-% copyright  2010 - Phillip Servio
+% Copyright (c) 2010 - Phillip Servio
 
 if right < left
     return
