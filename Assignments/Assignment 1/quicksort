@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2021-09-20T06:06:59.886Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36 Edg/93.0.961.52" etag="NYOXRDZ4FBWlCF0coijP" version="15.2.7" type="github">
+<mxfile host="app.diagrams.net" modified="2021-09-20T06:15:58.336Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36 Edg/93.0.961.52" etag="xcX1pT4kgbWCOyywH30T" version="15.2.7" type="github">
   <diagram id="wC1IUCxuPNfDBOxb1Ro-" name="Page-1">
-    <mxGraphModel dx="453" dy="673" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1414" dy="827" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -8,28 +8,59 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="rwElYW30Lfcc-ypotvsI-1" value="Start" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;" vertex="1" parent="1">
-          <mxGeometry x="370" y="60" width="140" height="70" as="geometry" />
+          <mxGeometry x="258.44" y="60" width="140" height="70" as="geometry" />
         </mxCell>
         <mxCell id="rwElYW30Lfcc-ypotvsI-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="rwElYW30Lfcc-ypotvsI-3" target="rwElYW30Lfcc-ypotvsI-5">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="rwElYW30Lfcc-ypotvsI-3" value="Matrix (M)" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" vertex="1" parent="1">
-          <mxGeometry x="365" y="190" width="150" height="60" as="geometry" />
+          <mxGeometry x="253.44" y="190" width="150" height="60" as="geometry" />
         </mxCell>
         <mxCell id="rwElYW30Lfcc-ypotvsI-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="rwElYW30Lfcc-ypotvsI-5" target="rwElYW30Lfcc-ypotvsI-7">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="rwElYW30Lfcc-ypotvsI-5" value="Retrieve size of M and save in variables x, y, and z" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="348.75" y="310" width="182.5" height="80" as="geometry" />
+          <mxGeometry x="237.19" y="310" width="182.5" height="80" as="geometry" />
         </mxCell>
         <mxCell id="rwElYW30Lfcc-ypotvsI-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="rwElYW30Lfcc-ypotvsI-7" target="rwElYW30Lfcc-ypotvsI-9">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="rwElYW30Lfcc-ypotvsI-7" value="Initialize 2D array of zeros in variable lst" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="348.75" y="440" width="181.25" height="80" as="geometry" />
+          <mxGeometry x="237.19" y="440" width="181.25" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="rwElYW30Lfcc-ypotvsI-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="rwElYW30Lfcc-ypotvsI-9" target="rwElYW30Lfcc-ypotvsI-18">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="rwElYW30Lfcc-ypotvsI-9" value="for i = 1 to z" style="rhombus;whiteSpace=wrap;html=1;strokeWidth=2;" vertex="1" parent="1">
-          <mxGeometry x="341.56" y="610" width="195.62" height="110" as="geometry" />
+          <mxGeometry x="230" y="610" width="195.62" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="rwElYW30Lfcc-ypotvsI-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.474;entryY=0.857;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="rwElYW30Lfcc-ypotvsI-12" target="rwElYW30Lfcc-ypotvsI-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rwElYW30Lfcc-ypotvsI-12" value="Calculate the sum of the diagonal" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="450.00000000000006" y="800" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="rwElYW30Lfcc-ypotvsI-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rwElYW30Lfcc-ypotvsI-13" target="rwElYW30Lfcc-ypotvsI-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rwElYW30Lfcc-ypotvsI-13" value="Save sum to lst(i, 1) and save index to lst(i, 2)" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="480.00000000000006" y="630" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="rwElYW30Lfcc-ypotvsI-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rwElYW30Lfcc-ypotvsI-18" target="rwElYW30Lfcc-ypotvsI-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rwElYW30Lfcc-ypotvsI-18" value="M(:, :, i)" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" vertex="1" parent="1">
+          <mxGeometry x="237.81" y="800" width="180" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="rwElYW30Lfcc-ypotvsI-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rwElYW30Lfcc-ypotvsI-21" target="rwElYW30Lfcc-ypotvsI-13">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="745" y="665" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rwElYW30Lfcc-ypotvsI-21" value="Sum" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" vertex="1" parent="1">
+          <mxGeometry x="650" y="720" width="160" height="70" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
