@@ -5,14 +5,11 @@
 
 function M = main(M)
 % Takes the 3D array as an input and outputs the final sorted array
+% M = 3D matrix
 
 [x, y, z] = size(M); % Getting size of matrix
 
 % error handling
-if x ~= y
-    error('Not a square matrix') % Check if matrix is square
-end
-
 if x == 0 || y == 0
     error('Not a matrix') % Check if matrix is matrix
 end
@@ -40,15 +37,23 @@ for i = 1:z % loop over matrix's planes
     
     [x, y] = size(page); % Get the dimensions for the plane
 
-    M(:, :, i) = quicksort(page, 1, x*y)'; % Call quicksort on the array, bounded between 1 and the number of elements 
+    M(:, :, i) = quicksort(page, 1, x*y)'; % Call quicksort on the array, bounded between 1 and the number of elements
+    % Transposed as MATLAB indexes along a column
 end
 
 end
 
-function s = sums(M) % M is a plane-component of the multi-dimensional array
+function s = sums(M)
 % Calculate the sum of the diagonal in a square matrix plane
+% M = 2D array
+% s = sum of diagonal
 
 [x, ~, z] = size(M);
+
+% Error handling
+if x ~= y
+    error('Not a square matrix') % Check if matrix is square
+end
 
 if z ~= 1
     error('Not a 2D matrix') % Check if more than one plane was inputted
@@ -65,8 +70,7 @@ end
 function N = reorderpages(M, indices)
 % Returns a new 3D matrix where the pages of M are ordered according to indices
 % M = 3D matrix to be reordered
-% indices = array containing original indices of pages where its current
-% index is its new position
+% indices = array containing original indices of pages where its current index is its new position
 
 [x, y, z] = size(M);
 
@@ -80,6 +84,11 @@ end
 
 function v=quicksort(v, left, right)
 % Copyright (c) 2010 - Phillip Servio
+% Recursive quicksort algorithm applied to an array v
+% Random pivot selection, two-sided comparison
+% v = array to be sorted
+% left = left index
+% right = right index
 
 if right < left
     return
