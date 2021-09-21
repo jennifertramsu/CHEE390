@@ -1,14 +1,8 @@
-% NOTES
-% implementing quicksort 
-% (1) turn plane into 1D array
-% (2) use quicksort to sort 1D array
-% (3) turn 1D array back into plane
-% nvm we want in-place sorting
-
 function v=quicksort(v, left, right)
-% Quicksort algorithm to sort a row vector in ascending order
-% Chooses random pivot between left and right indices
-% v = row vector
+% Copyright (c) 2010 - Phillip Servio
+% Recursive quicksort algorithm applied to an array v
+% Random pivot selection, two-sided comparison
+% v = array to be sorted
 % left = left index
 % right = right index
 
@@ -19,7 +13,7 @@ end
 i = left;
 j = right;
 s = right - left + 1; % can't use length for subarrays
-pivot = left + floor(s*rand(1)); % avoiding ^
+pivot = left + floor(s*rand(1)); 
 
 piv = v(pivot);
 
@@ -41,9 +35,9 @@ while i <= j
 end
 
 % recursion on left side
-v = quicksort_double(v, left, j);
+v = quicksort(v, left, j);
 
 % recursion on right side
-v = quicksort_double(v, i, right);
+v = quicksort(v, i, right);
         
 end
