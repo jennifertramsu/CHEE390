@@ -25,7 +25,7 @@ for i = 1:z % loop over matrix's planes
     lst(i, 2) = i; % assign plane number to second column in lst
 end
 
-lst = sortrows(lst); % sorts rows based on the first element (sum), ascending order
+lst = quicksort(lst, 1, length(lst), 0); % sorts rows based on the first element (sum), ascending order
 indices = lst(:, 2); % grabbing original indices of plane
 
 M = reorderpages(M, indices);
@@ -37,7 +37,7 @@ for i = 1:z % loop over matrix's planes
     
     [x, y] = size(page); % Get the dimensions for the plane
 
-    M(:, :, i) = quicksort(page, 1, x*y)'; % Call quicksort on the array, bounded between 1 and the number of elements
+    M(:, :, i) = quicksort(page, 1, x*y, 1)'; % Call quicksort on the array, bounded between 1 and the number of elements
     % Transposed as MATLAB indexes along a column
 end
 

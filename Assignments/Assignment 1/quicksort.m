@@ -1,4 +1,4 @@
-function v=quicksort(v, left, right)
+function v=quicksort(v, left, right, matrix)
 % Copyright (c) 2010 - Phillip Servio
 % Recursive quicksort algorithm applied to an array v
 % Random pivot selection, two-sided comparison
@@ -26,18 +26,24 @@ while i <= j
     end
     if i <= j
         % swap
-        vtmp = v(j);
-        v(j) = v(i);
-        v(i) = vtmp;
+        if matrix == 1
+            vtmp = v(j);
+            v(j) = v(i);
+            v(i) = vtmp;
+        else 
+            vtmp = v(j, :);
+            v(j, :) = v(i, :);
+            v(i, :) = vtmp;
+        end
         i = i+1;
         j = j-1;
     end
 end
 
 % recursion on left side
-v = quicksort(v, left, j);
+v = quicksort(v, left, j, matrix);
 
 % recursion on right side
-v = quicksort(v, i, right);
+v = quicksort(v, i, right, matrix);
         
 end
