@@ -32,10 +32,12 @@ while i <= j
             vtmp = v(j);
             v(j) = v(i);
             v(i) = vtmp;
-        else 
+        elseif matrix == 0
             vtmp = v(j, :);
             v(j, :) = v(i, :);
             v(i, :) = vtmp;
+        else
+            error('Unknown data type specified: indicate 1 for matrix, 2 for list')
         end
         i = i+1;
         j = j-1;
