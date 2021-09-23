@@ -25,7 +25,7 @@ end
 for k = 1:m-1 % There's no pivot in the last row
     for i = k+1:m % Starting with row below pivot row
         p = a(i,k)/a(k,k);
-        a(i,:) = a(i,:) - a(k,:)*p; % Takes care of all elements in row
+        a(i,:) = a(i,:) - a(k,:)*p; % Takes care of all elements in row % how??
     end
 end
 
@@ -40,7 +40,7 @@ x = zeros(m,1);
 x(m) = b(m)/a(m,m); % Saving all x values in row vector
 
 for j=m-1:-1:1
-    x(j) = (b(j)-a(j,j+1:m)*x(j+1:m))/a(j,j);
+    x(j) = (b(j)-a(j,j+1:m)*x(j+1:m))/a(j,j); % Uses dot product to sum elements in row by corresponding x-values
 end
 
 end
