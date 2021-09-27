@@ -8,7 +8,7 @@ function v=quicksort(v, left, right, matrix)
 % matrix = integer to indicate type of input (1 for matrix, 0 for list)
 % --> if matrix = 0, sorts rows based on the first element
 
-if right < left
+if right < left    
     return
 end
 
