@@ -4,7 +4,7 @@
 Bim = [0.01, 0.1, 1, 10, 1000];
 Fom = [0, 2];
 
-r = brent(@(x)x^2 - 1, -2, 2, 1e-12)
+r = brent(@(x)x^3, -1, 1, 1e-12)
 
 % brent on hygroscopicity
 

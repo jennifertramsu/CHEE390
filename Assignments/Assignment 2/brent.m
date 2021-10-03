@@ -1,4 +1,4 @@
-function [r] = brent(func, xo, xf, tol)
+function [z] = brent(func, xo, xf, tol)
 % This algorithm implements Brent's root finding method
 % func = function to be searched
 % xo = start of interval
@@ -6,7 +6,7 @@ function [r] = brent(func, xo, xf, tol)
 % tol = tolerance
 % [r] = array of roots to be returned
 %% Initialization
-r = zeros(1000, 1); % array of roots to be returned
+z = zeros(1000, 1); % array of roots to be returned
 n = 0; % keeping track of number of roots found
 x = xo;
 dxo = 1e-2;
@@ -46,7 +46,7 @@ while x <= xf
 
         if check < tol && x <= xf
             n = n + 1;
-            r(n) = x4;
+            z(n) = x4;
             break
         elseif x1 < x4 && x4 < x2
             x3 = x2;
@@ -62,9 +62,9 @@ while x <= xf
     end
         
     x = x3 + dxo/10; 
-    break
+    
 end
 
 % Empty out unused array
-r(n + 1:end) = [];
+z(n + 1:end) = [];
 end
