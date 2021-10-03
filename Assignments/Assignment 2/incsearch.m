@@ -8,31 +8,27 @@ xft = xf + dxo;
 yold = feval(fun, xi);
 xs = zeros(1, 3);
 
-while xnew <= xft % Before we reach end of interval
-    dyold = 1e12;
-    sing = 0;    
+% If yold happens to be a root
+if yold == 0
+    xs = xold;
+    return
+end
 
+while xnew <= xft % Before we reach end of interval
+    
     xnew = xold + dxo; % Increment x
     ynew = feval(fun, xnew); % New y-value
-    if ynew == 0 % If root found
-        break
-    elseif sign(ynew * yold) == 1 || sign(ynew * yold) == 0 % No root found, step over
+    if ynew == 0 % If ynew happens to be root
+        xs = xnew;
+        return       
+    elseif sign(ynew * yold) == 1 % No sign change, continue
         xold = xnew;
         yold = ynew;
-    else % Root between y-old and y-new
-        dy = abs(yold - ynew);
-        if dy > dyold % Checking for singularities
-            sing = 1;
-            break
-        end
+    else % Sign change found
         xs = [xold, xnew];
         break
     end 
 
-end
-
-if sing == 1
-    xs = [];
 end
 
 end

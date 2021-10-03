@@ -1,6 +1,5 @@
 function rt = bisection(func, xi, xf, dxo, tol)
 
-i = 0;
 xi = xi - dxo;
 x1 = xi + dxo;
 y1 = func(xi);
@@ -26,15 +25,10 @@ while check > tol
     else
         check = abs(1 - x1/x2);  
     end
-    
-    i = i + 1;
-    if i > 10
-        break
-    end
-    
+
 end
 
-dyold = 1e5;
+dyold = 1e12;
 dy = abs(y3 - y1);
     
 if dy > dyold % Singularity

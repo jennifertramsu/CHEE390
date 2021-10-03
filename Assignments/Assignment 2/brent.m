@@ -9,7 +9,7 @@ function [z] = brent(func, xo, xf, tol)
 z = zeros(1000, 1); % array of roots to be returned
 n = 0; % keeping track of number of roots found
 x = xo;
-dxo = 1e-4;
+dxo = 1e-2;
 %% Start of outer while loop - Ensures that function searches entire interval
 while x <= xf
     % --> conditions: x < xf
@@ -19,9 +19,11 @@ while x <= xf
     
     if s(2) == 3 % No more roots found
         break
-    elseif s(2) == 0 % Singularity encountered
+    elseif s(2) == 1
+        n = n + 1;
+        z(n) = xs;
         x = x + dxo;
-        break
+        continue
     end
     
     x1 = xs(1); y1 = func(x1);
@@ -32,11 +34,9 @@ while x <= xf
     y2 = func(x2);
     
     check = 1; % Initialize check
-    sing = 0; % Initialize flag for singularity
     
     %% Start of inner while loop - Brent's Method
     while check > tol && x1 < xf
-        dyprev = abs(y3 - y1);
         % --> conditions: check < tol
         % Find a better estimate of the root, x4
         r = y2/y3;
@@ -71,12 +71,6 @@ while x <= xf
             y1 = y2;
         end
         
-        dy = abs(y3 - y1);
-        if dy > dyprev
-            % step over?
-            x = x3 + dxo;
-            break
-        end
         x2 = x4;
         y2 = y4;
         
