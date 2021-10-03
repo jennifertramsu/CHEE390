@@ -14,7 +14,11 @@ dxo = 1e-2;
 while x <= xf
     % --> conditions: x < xf
     %% Find x1 and x3 through incremental search
-    xs = incsearch(func, x, xf, dxo, tol);
+    xs = incsearch(func, x, xf, dxo);
+    s = size(xs);
+    if s(2) == 3
+        break
+    end
     x1 = xs(1); y1 = func(x1);
     x3 = xs(2); y3 = func(x3);
     
@@ -57,8 +61,8 @@ while x <= xf
         
     end
         
-    x = x3 + dxo; 
-
+    x = x3 + dxo/10; 
+    break
 end
 
 % Empty out unused array
