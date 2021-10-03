@@ -9,16 +9,21 @@ function [z] = brent(func, xo, xf, tol)
 z = zeros(1000, 1); % array of roots to be returned
 n = 0; % keeping track of number of roots found
 x = xo;
-dxo = 1e-2;
+dxo = 1e-4;
 %% Start of outer while loop - Ensures that function searches entire interval
 while x <= xf
     % --> conditions: x < xf
     %% Find x1 and x3 through incremental search
     xs = incsearch(func, x, xf, dxo);
     s = size(xs);
-    if s(2) == 3
+    
+    if s(2) == 3 % No more roots found
+        break
+    elseif s(2) == 0 % Singularity encountered
+        x = x + dxo;
         break
     end
+    
     x1 = xs(1); y1 = func(x1);
     x3 = xs(2); y3 = func(x3);
     
@@ -27,9 +32,11 @@ while x <= xf
     y2 = func(x2);
     
     check = 1; % Initialize check
+    sing = 0; % Initialize flag for singularity
     
     %% Start of inner while loop - Brent's Method
-    while check > tol
+    while check > tol && x1 < xf
+        dyprev = abs(y3 - y1);
         % --> conditions: check < tol
         % Find a better estimate of the root, x4
         r = y2/y3;
@@ -42,26 +49,48 @@ while x <= xf
         x4 = x2 + p/q;
         y4 = func(x4);
         
+        % If x4 is NaN, don't bother with while --> check with bisection
+        if isnan(x4)
+            rt = bisection(func, x1, x3, dxo, tol);
+            n = n + 1;
+            z(n) = rt;
+            break
+        end
+        
         check = abs((p/q)/x4);
-
-        if check < tol && x <= xf
+        
+        if (check < tol && x <= xf) || y4 == 0
             n = n + 1;
             z(n) = x4;
             break
         elseif x1 < x4 && x4 < x2
             x3 = x2;
-            y3 = y2; 
+            y3 = y2;
         else
             x1 = x2;
             y1 = y2;
         end
         
+        dy = abs(y3 - y1);
+        if dy > dyprev
+            % step over?
+            x = x3 + dxo;
+            break
+        end
         x2 = x4;
         y2 = y4;
         
     end
+    
+    % Verify root with another method
+    rt = bisection(func, x1, x3, dxo, tol);
+    
+    if isnan(rt) % Singularity was just added, remove
+        z(n) = 0;
+        n = n - 1;
+    end
         
-    x = x3 + dxo/10; 
+    x = x3 + dxo;
     
 end
 
