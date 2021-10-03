@@ -1,14 +1,15 @@
-function [r, n] = brent(func, xo, xf, dxo, tol)
+function [r] = brent(func, xo, xf, tol)
 % This algorithm implements Brent's root finding method
 % func = function to be searched
 % xo = start of interval
 % xf = end of interval
 % tol = tolerance
-% [r, n] = array of roots to be returned
+% [r] = array of roots to be returned
 %% Initialization
 r = zeros(1000, 1); % array of roots to be returned
 n = 0; % keeping track of number of roots found
 x = xo;
+dxo = 1e-2;
 %% Start of outer while loop - Ensures that function searches entire interval
 while x <= xf
     % --> conditions: x < xf
@@ -21,10 +22,10 @@ while x <= xf
     x2 = (x1*y3 - x3*y1)/(y3 - y1);
     y2 = func(x2);
     
-    check = 0; % Initialize check
+    check = 1; % Initialize check
     
     %% Start of inner while loop - Brent's Method
-    while check < tol
+    while check > tol
         % --> conditions: check < tol
         % Find a better estimate of the root, x4
         r = y2/y3;
@@ -37,9 +38,15 @@ while x <= xf
         x4 = x2 + p/q;
         y4 = func(x4);
         
-        if x1 < x4 && x4 < x2
+        check = abs((p/q)/x4);
+
+        if check < tol && x <= xf
+            n = n + 1;
+            r(n) = x4;
+            break
+        elseif x1 < x4 && x4 < x2
             x3 = x2;
-            y3 = y2;
+            y3 = y2; 
         else
             x1 = x2;
             y1 = y2;
@@ -48,11 +55,12 @@ while x <= xf
         x2 = x4;
         y2 = y4;
         
-        check = abs((p/q)/x4);
     end
-    
-    n = n + 1;
-    r(n) = x4;
-    x = x + dxo; % placeholder for now
+        
+    x = x3 + dxo; 
+
 end
+
+% Empty out unused array
+r(n + 1:end) = [];
 end
