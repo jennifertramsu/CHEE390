@@ -4,7 +4,7 @@ function [z] = brent(func, xo, xf, tol)
 % xo = start of interval
 % xf = end of interval
 % tol = tolerance
-% [r] = array of roots to be returned
+% [z] = array of roots to be returned
 %% Initialization
 z = zeros(1000, 1); % array of roots to be returned
 n = 0; % keeping track of number of roots found
@@ -36,7 +36,11 @@ while x <= xf
     check = 1; % Initialize check
     
     %% Start of inner while loop - Brent's Method
-    while check > tol && x1 < xf
+    
+    i = 0; % Initialize counter
+    fail = 0;
+    
+    while check > tol
         % --> conditions: check < tol
         % Find a better estimate of the root, x4
         r = y2/y3;
@@ -74,15 +78,29 @@ while x <= xf
         x2 = x4;
         y2 = y4;
         
+        i = i + 1;
+        
+        if i > 15
+            fail = 1; % Brent's failed, call bisection
+            break
+        end
+            
+        
     end
     
     % Verify root with another method
     rt = bisection(func, x1, x3, dxo, tol);
     
-    if isnan(rt) % Singularity was just added, remove
-        z(n) = 0;
-        n = n - 1;
+    if fail == 1 % Brent's failed
+        n = n + 1;
+        z(n) = rt;
+    else % Verifying root from Brent
+        a = 1; %placeholder
     end
+    %if isnan(rt) && ~fail % Singularity was just added, remove
+     %   z(n) = 0;
+      %  n = n - 1;
+    %end
         
     x = x3 + dxo;
     

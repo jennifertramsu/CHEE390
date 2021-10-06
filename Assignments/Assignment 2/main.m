@@ -14,7 +14,7 @@ brent(@(x)x, -1, 1, 1e-12)
 brent(@(x)x^2-1, -1, 1, 1e-12)
 brent(@(x)x^3, -1, 1, 1e-12)
 brent(@(x)sin(x), -pi/2, pi/2, 1e-12)
-%brent(@(x)tan(x), -pi/2, pi/2, 1e-12)
+brent(@(x)tan(x), -pi/2, pi/2, 1e-12)
 
 % brent on hygroscopicity
 

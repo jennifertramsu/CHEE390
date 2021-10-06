@@ -20,22 +20,15 @@ while check > tol
         y1 = y3;
     end
     
-    if abs(x2) < dxo
-        check = abs(x2);
+    % VERIFY CHECK
+    if abs(x3) < eps
+        check = abs(x3); % Absolute error
     else
-        check = abs(1 - x1/x2);  
+        check = abs(1 - x1/x2);
     end
 
 end
 
-dyold = 1e12;
-dy = abs(y3 - y1);
-    
-if dy > dyold % Singularity
-    rt = NaN;
-    return
-else
-    rt = x3;
-end
+rt = x3;
 
 end
