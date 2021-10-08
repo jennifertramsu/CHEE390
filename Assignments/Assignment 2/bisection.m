@@ -1,4 +1,4 @@
-function rt = bisection(func, xi, xf, dxo, tol)
+function [rt, bifail] = bisection(func, xi, xf, dxo, tol)
 
 xi = xi - dxo;
 x1 = xi + dxo;
