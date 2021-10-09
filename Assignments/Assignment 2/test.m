@@ -5,7 +5,7 @@ clc
 size(r)
 s
 
-[r, s] = brent(@(x)sin(x^2), 0, 300, 1e-4, 1e-12); % really long time when dx = 1e-2
+[r, s] = brent(@(x)sin(x^2), 0, 300, 1e-2, 1e-12); % really long time when dx = 1e-2
 size(r)
 s
 
