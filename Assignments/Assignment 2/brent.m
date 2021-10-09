@@ -11,7 +11,6 @@ z = zeros(1000, 1); % array of roots to be returned
 n = 0; % Keeping track of roots found
 x = xi; % Beginning of interval
 ns = 0;
-
 %% Start of outer while loop -- to search the entire interval
 while x < xf
     xs = incsearch(func, x, xf, dx);
@@ -75,6 +74,11 @@ while x < xf
             brfail = 1; % Brent's failed, call bisection
             break
         end
+        
+        if x2 > x3
+            brfail = 1;
+            break
+        end
     end
     
     if brfail == 0 && x2 <= xf
@@ -93,7 +97,6 @@ while x < xf
     x = x3 + dx;      
     
 end
-
 % Empty out unused array
 z(n + 1:end) = [];
 
