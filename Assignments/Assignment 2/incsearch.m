@@ -1,24 +1,25 @@
-function [xs] = incsearch(func, xi, xf, dxo)
+function [xs] = incsearch(func, xi, xf, dx)
 % Finds two points on either side of a root
 
-xold = xi;
-xnew = xold + dxo; % Increment x
+xi = xi - dx;
+xold = xi + dx; yold = feval(func, xi);
+xnew = xold; ynew = yold;
 
-yold = feval(func, xold);
-ynew = feval(func, xnew); % New y-value
+xs = zeros(1, 3);
 
-xs = zeros(1, 2);
-
-while sign(ynew * yold) == 1 && xnew < xf % Before we reach end of interval
-
+while xnew < xf % Before we reach end of interval
+    
+    xnew = xold + dx;
+    ynew = feval(func, xnew);
+    
+    if sign(ynew * yold) == -1
+        xs = [xold, xnew];
+        break
+    end
+    
     xold = xnew;
     yold = ynew;
-    
-    xnew = xold + dxo;
-    ynew = feval(func, xnew);
 
 end
-
-xs = [xold, xnew];
 
 end

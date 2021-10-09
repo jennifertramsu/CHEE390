@@ -6,7 +6,6 @@ function [z] = brent(func, xi, xf, dx, tol)
 % dx = step size
 % tol = tolerance
 % z = array of roots to be returned
-
 %% Initialization
 z = zeros(1000, 1); % array of roots to be returned
 n = 0; % Keeping track of roots found
@@ -15,6 +14,12 @@ x = xi; % Beginning of interval
 %% Start of outer while loop -- to search the entire interval
 while x < xf
     xs = incsearch(func, x, xf, dx);
+    nxs = size(xs);
+    
+    if nxs(2) == 3 % End of interval reached
+        break
+    end
+    
     x1 = xs(1); y1 = feval(func, x1);
     x3 = xs(2); y3 = feval(func, x3);
     
@@ -30,7 +35,7 @@ while x < xf
     i = 0;
     brfail = 0;
     
-    while check > tol && x3 < xf 
+    while check > tol && x2 <= xf 
         % --> conditions: check < tol
         % Find a better estimate of the root, x4
         r = y2/y3;
@@ -50,7 +55,7 @@ while x < xf
         
         check = abs((p/q)/x4);
 
-        if (check < tol && x <= xf) || y4 == 0
+        if check < tol && x <= xf
             n = n + 1;
             z(n) = x4;
             break
@@ -76,6 +81,8 @@ while x < xf
     if brfail == 0
         n = n + 1;
         z(n) = x4;
+    else
+        
     end
     
     x = x3 + dx;      
