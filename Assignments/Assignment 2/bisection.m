@@ -1,6 +1,7 @@
-function [rt, bifail] = bisection(func, xi, xf, tol)
+function [rt, bifail] = bisection(func, xi, xf, dx, tol)
 
-x1 = xi; y1 = feval(func, x1);
+xi = xi - dx;
+x1 = xi + dx; y1 = feval(func, xi);
 x2 = xf; y2 = feval(func, xf);
 
 dy = abs(y1 - y2);
@@ -12,13 +13,22 @@ while check > tol
 
     x3 = (x1 + x2) / 2;
     y3 = feval(func, x3);
+
+    if abs(y3) < 1
+        check = abs(y3); % Absolute error
+    else
+        check = abs(1 - y1/y3);
+    end
     
     if sign(y1 * y3) == -1
         x2 = x3;
         y2 = y3;
-    else
+    elseif sign(y2 * y3) == -1
         x1 = x3;
         y1 = y3;
+    else
+        bifail = 1;
+        break
     end
     
     dynew = abs(y1 - y2);
@@ -26,13 +36,6 @@ while check > tol
     if dynew > dy
         bifail = 1;
         break
-    end
-    
-    % VERIFY CHECK
-    if abs(x2) < 1
-        check = abs(x2); % Absolute error
-    else
-        check = abs(1 - x1/x2);
     end
 
 end
