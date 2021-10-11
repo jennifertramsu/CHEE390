@@ -20,7 +20,7 @@ while check > tol
         check = abs(1 - y1/y3);
     end
     
-    if x3 >= x2
+    if x3 >= x2 || abs(x2 - x3) < tol
         bifail = 1;
         break
     end

@@ -13,7 +13,7 @@ rs = eps:(1-eps)/dr:1;
 
 % brent on hygroscopicity
 
-h = @(x)hygro(10, x);
+h = @(x)hygro(1000, x);
 [z, ns] = brent(h, 0, 10000, 0.01, 1e-12);
 
 g = Gn(z);
