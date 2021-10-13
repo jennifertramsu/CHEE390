@@ -1,50 +1,53 @@
-function [rt, bifail] = bisection(func, xi, xf, dx, tol)
+function [rt, bifail] = bisection(func, xl, xr, tol)
 
-xi = xi - dx;
-x1 = xi + dx; y1 = feval(func, xi);
-x2 = xf; y2 = feval(func, xf);
+yl = feval(func, xl);
+yr = feval(func, xr);
 
-dy = abs(y1 - y2);
+dy = abs(yl - yr);
 
 bifail = 0;
 check = 1;
 
 while check > tol
 
-    x3 = (x1 + x2) / 2;
-    y3 = feval(func, x3);
-
-    if abs(y3) < 1
-        check = abs(y3); % Absolute error
-    else
-        check = abs(1 - y1/y3);
-    end
+    xmid = (xl + xr) / 2;
+    ymid = feval(func, xmid);
     
-    if x3 >= x2 || abs(x2 - x3) < tol
-        bifail = 1;
-        break
-    end
-    
-    if sign(y1 * y3) == -1
-        x2 = x3;
-        y2 = y3;
-    elseif sign(y2 * y3) == -1
-        x1 = x3;
-        y1 = y3;
+    if sign(yl * ymid) == -1
+        xr = xmid;
+        yr = ymid;
+    elseif sign(yr * ymid) == -1
+        xl = xmid;
+        yl = ymid;
+    elseif ymid == 0
+        rt = xmid;
+        return
+    elseif yl == 0
+        rt = xl;
+        return
+    elseif yr == 0
+        rt = xr;
+        return
     else
         bifail = 1;
         break
     end
     
-    dynew = abs(y1 - y2);
+    dynew = abs(yl - yr);
     
-    if dynew > dy
+    if dynew >= dy
         bifail = 1;
         break
+    end
+    
+    if abs(xr) < 1 % use x to avoid floating point errors in y --> if aggressive slope, need more precision for y values to converge
+        check = abs(xr-xl); % Absolute error
+    else
+        check = abs(1 - xl/xr); % Relative error
     end
 
 end
 
-rt = x3;
+rt = xr; % Convention is to take right boundary
 
 end

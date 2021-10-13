@@ -9,10 +9,10 @@ s
 size(r)
 s
 
-[z, s] = brent(@(x)x, -1, 1, 1e-2, 1e-12)
-[z, s] = brent(@(x)x^2-1, -1, 1, 1e-2, 1e-12)
-[z, s] = brent(@(x)x^3, -1, 1, 1e-2, 1e-12)
-[z, s] = brent(@(x)sin(x), -pi/2, pi/2, 1e-2, 1e-12)
-[z, s] = brent(@(x)tan(x), -pi/2, pi/2, 1e-2, 1e-12)
-[z, s] = brent(@(x)1/x, -1, 1, 1e-2, 1e-12)
-[z, s] = brent(@(x)x*cot(x), -5, 5, 1e-2, 1e-12)
+% [z, s] = brent(@(x)x, -1, 1, 1e-2, 1e-12)
+% [z, s] = brent(@(x)x^2-1, -1, 1, 1e-2, 1e-12)
+% [z, s] = brent(@(x)x^3, -1, 1, 1e-2, 1e-12)
+% [z, s] = brent(@(x)sin(x), -pi, pi, 1e-2, 1e-12)
+% [z, s] = brent(@(x)tan(x), -pi/2, pi/2, 1e-2, 1e-12)
+% [z, s] = brent(@(x)1/x, -1, 1, 1e-2, 1e-12)
+% [z, s] = brent(@(x)x*cot(x), -5, 5, 1e-2, 1e-12)

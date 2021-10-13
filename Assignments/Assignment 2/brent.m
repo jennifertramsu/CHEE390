@@ -31,12 +31,12 @@ while x < xf
     check = 1;
     
     %% Start of inner while loop - Brent's Method
-    % Initialize counter
+    % Initialize counter and flag
     i = 0;
     brfail = 0;
     
     while check > tol && x2 <= xf 
-        % --> conditions: check < tol
+        % --> conditions: check < tol, x2 still inside interval
         % Find a better estimate of the root, x4
         r = y2/y3;
         s = y2/y1;
@@ -55,7 +55,7 @@ while x < xf
         
         check = abs((p/q)/x4);
 
-        if check < tol && x <= xf
+        if check < tol && x <= xf % Success!
             break
         elseif x1 < x4 && x4 < x2
             x3 = x2;
@@ -75,17 +75,17 @@ while x < xf
             break
         end
         
-        if x2 > x3
+        if x2 > x3 % If x2 blows up from floating-point error
             brfail = 1;
             break
         end
     end
     
-    if brfail == 0 && x2 <= xf
+    if brfail == 0 && x2 <= xf % RETURN TO THIS
         n = n + 1;
         z(n) = x4;
     else
-        [rt, bifail] = bisection(func, x1, x3, dx, tol);
+        [rt, bifail] = bisection(func, x1, x3, tol);
         if bifail == 0
             n = n + 1;
             z(n) = rt;
@@ -94,9 +94,10 @@ while x < xf
         end
     end
     
-    x = x3 + dx;      
+    x = x3 + dx; % Increment x after x3 for next root      
     
 end
+
 % Empty out unused array
 z(n + 1:end) = [];
 
