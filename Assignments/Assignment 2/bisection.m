@@ -48,6 +48,10 @@ while check > tol
 
 end
 
-rt = xr; % Convention is to take right boundary
+if check < tol && bifail == 0
+    rt = xr; % Convention is to take right boundary
+else
+    rt = NaN;
+end
 
 end

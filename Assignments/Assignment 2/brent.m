@@ -55,7 +55,7 @@ while x < xf
         
         check = abs((p/q)/x4);
 
-        if check < tol && x <= xf % Success!
+        if check < tol && x4 <= xf % Success!
             break
         elseif x1 < x4 && x4 < x2
             x3 = x2;
@@ -70,7 +70,7 @@ while x < xf
         
         i = i + 1;
 
-        if i >= 15
+        if i > 5
             brfail = 1; % Brent's failed, call bisection
             break
         end
@@ -81,7 +81,7 @@ while x < xf
         end
     end
     
-    if brfail == 0 && x2 <= xf % RETURN TO THIS
+    if brfail == 0 && x4 <= xf
         n = n + 1;
         z(n) = x4;
     else

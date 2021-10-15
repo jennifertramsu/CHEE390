@@ -5,7 +5,9 @@ function [xs] = incsearch(func, xl, xr, dx)
 
 xl = xl - dx;
 
-xold = xl + dx; yold = feval(func, xl);
+xold = xl + dx; 
+yold = feval(func, xl);
+
 xnew = xold;
 
 xs = zeros(1, 3);

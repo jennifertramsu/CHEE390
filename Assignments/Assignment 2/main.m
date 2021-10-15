@@ -1,4 +1,4 @@
-Bim = [1000];
+Bim = [0.01, 0.1, 1, 10, 1000];
 
 for b = 1:length(Bim)
     clf
@@ -14,7 +14,7 @@ for b = 1:length(Bim)
     % Brent on hygroscopicity
     
     h = @(x)hygro(Bim(b), x);
-    [z, ns] = brent(h, 0, 10000, 1e-4, 1e-12);
+    [z, ns] = brent(h, 0, 10000, 1e-2, 1e-12);
     
     g = Gn(z);
     
