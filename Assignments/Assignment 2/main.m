@@ -1,4 +1,4 @@
-Bim = [0.01, 0.1, 1, 10, 1000];
+Bim = [1000];
 
 for b = 1:length(Bim)
     clf
@@ -11,10 +11,10 @@ for b = 1:length(Bim)
     Fo = Fr(1):(Fr(2)-Fr(1))/df:Fr(2);
     rs = eps:(1-eps)/dr:1;
     
-    % brent on hygroscopicity
+    % Brent on hygroscopicity
     
     h = @(x)hygro(Bim(b), x);
-    [z, ns] = brent(h, 0, 10000, 1e-2, 1e-12);
+    [z, ns] = brent(h, 0, 10000, 1e-4, 1e-12);
     
     g = Gn(z);
     
@@ -26,9 +26,8 @@ for b = 1:length(Bim)
         end
     end
     
-    % Time it takes for centerline concentration to reach a certain value
     name = strcat('Bim = ', num2str(Bim(b)));
     plotconc(rs, Fo, dr, theta, name)
 end
 
-clf
+% Time it takes for centerline concentration to reach a certain value
