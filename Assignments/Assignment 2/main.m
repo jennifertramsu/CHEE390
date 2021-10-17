@@ -1,33 +1,41 @@
-Bim = [0.01, 0.1, 1, 10, 1000];
+% Ngan Jennifer Tram Su [260923530]
 
-for b = 1:length(Bim)
-    clf
-    
-    Fr = [1e-6, 2];
-    
-    dr = 100;
-    df = 100;
-    
-    Fo = Fr(1):(Fr(2)-Fr(1))/df:Fr(2);
-    rs = eps:(1-eps)/dr:1;
-    
-    % Brent on hygroscopicity
-    
-    h = @(x)hygro(Bim(b), x);
-    [z, ns] = brent(h, 0, 10000, 1e-2, 1e-12);
-    
-    g = Gn(z);
-    
-    theta = zeros(length(rs), length(Fo));
-    
-    for i = 1:length(rs)
-        for j = 1:length(Fo)
-            theta(i, j) = concentration(g, Fo(j), rs(i), z);
-        end
-    end
-    
-    name = strcat('Bim = ', num2str(Bim(b)));
-    plotconc(rs, Fo, dr, theta, name)
-end
+% Main Program -- Outputs the concentration profile for a given biot number
+% and predicts the time it takes for the centerline concentration to reach
+% a certain value.
+% Program also saves a 2D and 3D plot of the concentration profile to the
+% working directory.
+
+% Instructions:
+% --> run the main program by clicking run and following the instructions
+% printed to the command window
+% --> will be prompted to enter a Biot number and a target centerline
+% concentration value
+% To produce the plots for all Biot numbers, run the m-file titled
+% 'allplots.m"
+
+clf
+clear
+clc
+
+Bim = input('Input the Biot number: ');
+
+% Initializing the dimensionless time parameter
+Fr = [1e-6, 2];
+df = 100;
+Fo = Fr(1):(Fr(2)-Fr(1))/df:Fr(2);
+
+name = strcat(num2str(Bim));
+theta = spatial(Bim, Fo, name);
 
 % Time it takes for centerline concentration to reach a certain value
+fprintf('Predicting the time it takes for centerline concentration to reach a certain value...\n')
+v = input('Input the target concentration: ');
+
+t = incpredict(theta(1, :), Fo, v);
+
+if isnan(t)
+    fprintf('Centerline concentration never reaches a value of %s.\n', num2str(v))
+else
+    fprintf('Biot: %s - The time it takes for the centerline concentration to reach %s is around %s.\n', num2str(Bim), num2str(v), num2str(t))
+end

@@ -1,3 +1,5 @@
+% Ngan Jennifer Tram Su [260923530]
+
 function [z, ns] = brent(func, xi, xf, dx, tol)
 % This algorithm implements Brent's root finding method
 % func = function to be searched
@@ -6,13 +8,15 @@ function [z, ns] = brent(func, xi, xf, dx, tol)
 % dx = step size
 % tol = tolerance
 % z = array of roots to be returned
+% ns = number of singularities reported
 %% Initialization
 z = zeros(1000, 1); % array of roots to be returned
 n = 0; % Keeping track of roots found
 x = xi; % Beginning of interval
-ns = 0;
+ns = 0; % Keeping track of singularities reported
 %% Start of outer while loop -- to search the entire interval
 while x < xf
+    % Find sign change using incremental search
     xs = incsearch(func, x, xf, dx);
     nxs = size(xs);
     
@@ -35,8 +39,8 @@ while x < xf
     i = 0;
     brfail = 0;
     
-    while check > tol && x2 <= xf 
-        % --> conditions: check < tol, x2 still inside interval
+    while check > tol
+        % --> Conditions: check < tol, x2 still inside interval
         % Find a better estimate of the root, x4
         r = y2/y3;
         s = y2/y1;
@@ -81,6 +85,7 @@ while x < xf
         end
     end
     
+    % Only if Brent's was successful and x4 still in interval
     if brfail == 0 && x4 <= xf
         n = n + 1;
         z(n) = x4;
@@ -90,7 +95,7 @@ while x < xf
             n = n + 1;
             z(n) = rt;
         else
-            ns = ns + 1;
+            ns = ns + 1; % Singularity reported
         end
     end
     

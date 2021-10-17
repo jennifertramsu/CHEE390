@@ -1,5 +1,9 @@
+% Ngan Jennifer Tram Su [260923530]
+
 function plotconc(rs, Fo, dr, theta, b)
-% Figure 1 is a 2D plot of Thetas vs rs
+% Phillip Servio (c) 2021
+% Figure 1 produces a 2D plot of spatial concentration
+% Figure 2 produces a 3D plot of spatial concentration
 
 xx=rs'*ones(1,length(Fo));
 figure(1);
@@ -128,7 +132,7 @@ xlabel('r*','fontsize',10)
 ylabel('r*','fontsize',10)
 zlabel('\theta_w*','fontsize',10)
 title('F_{om} = 2','fontsize',10)
-print(figure(1),'-dpng','-r400',strcat('picture1 ', b))
-print(figure(2),'-dpng','-r600',strcat('picture2 ', b))
+print(figure(1),'-dpng','-r400',strcat('picture1_', b, '.png'))
+print(figure(2),'-dpng','-r600',strcat('picture2_', b, '.png'))
 
 end

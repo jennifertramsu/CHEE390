@@ -1,5 +1,12 @@
-function [rt, bifail] = bisection(func, xl, xr, tol)
+% Ngan Jennifer Tram Su [260923530]
 
+function [rt, bifail, sing] = bisection(func, xl, xr, tol)
+% This function implements the bisection root finding method
+% func = residual function of interest
+% xl = left bound
+% xr = right bound
+% tol = tolerance
+%% Initialization
 yl = feval(func, xl);
 yr = feval(func, xr);
 
@@ -7,7 +14,9 @@ dy = abs(yl - yr);
 
 bifail = 0;
 check = 1;
+sing = NaN;
 
+%% Beginning of while loop
 while check > tol
 
     xmid = (xl + xr) / 2;
@@ -28,30 +37,31 @@ while check > tol
     elseif yr == 0
         rt = xr;
         return
-    else
+    else % Maybe NaN
         bifail = 1;
         break
     end
     
-    dynew = abs(yl - yr);
+    dynew = abs(yl - yr); % Check new dy
     
-    if dynew >= dy
+    if dynew >= dy % Singularity :')
         bifail = 1;
         break
     end
     
-    if abs(xr) < 1 % use x to avoid floating point errors in y --> if aggressive slope, need more precision for y values to converge
-        check = abs(xr-xl); % Absolute error
+    if abs(xr) < 1 % Use x to avoid floating point errors in y --> if aggressive slope, need more precision for y values to converge
+        check = abs(xr-xl); % Absolute error for small xr
     else
         check = abs(1 - xl/xr); % Relative error
     end
 
 end
 
+%% Final Check
 if check < tol && bifail == 0
     rt = xr; % Convention is to take right boundary
 else
-    rt = NaN;
+    rt = NaN; % Just so rt has some return value
 end
 
 end
