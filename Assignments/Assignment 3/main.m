@@ -7,7 +7,7 @@
 Tc = 125;
 T = linspace(20, 125, 500);
 S = zeros(length(T), 3);
-xg = [0.015, 0.985];
+xg = [0.37, 0.37];
 
 %% Iterate over temperature to obtain new van Laars constants
 
