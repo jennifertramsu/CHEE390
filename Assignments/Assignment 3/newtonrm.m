@@ -29,7 +29,7 @@ while tol < check
     end
         
     check = ov * abs(xg - xn) / n;
-    xg = xn;
+    xg = xn; % need to update activities
     
 end
 

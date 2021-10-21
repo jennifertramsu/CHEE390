@@ -1,7 +1,9 @@
-function y = residual(x, g)
+function y = residual(x, T, Tc)
 
 xa1 = x(1);
 xb1 = x(2);
+
+g = gammas(x, T, Tc);
 
 galpha = g(1, :);
 gbeta = g(2, :);
