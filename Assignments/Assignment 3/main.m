@@ -7,7 +7,7 @@
 Tc = 125;
 T = linspace(20, 125, 500);
 S = zeros(length(T), 3);
-xg = [0.37, 0.37];
+xg = [0.1, 0.8];
 
 %% Iterate over temperature to obtain new van Laars constants
 
@@ -17,7 +17,7 @@ for t = 1:length(T)
     g = gammas(xg, T(t), Tc);
     
     r = @(x) residual(x, g);
-    xn = newtonrm(r, xg, 1e-10, 1e-12);
+    xn = newtonrm(r, xg, 1e-3, 1e-12);
     S(t, :) = [T(t), xn(1), xn(2)];
     xg = [xn(1), xn(2)]; % Zero-order continuation
 end
