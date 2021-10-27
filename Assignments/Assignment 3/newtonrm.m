@@ -24,12 +24,12 @@ while tol < check
     dy = ov * abs(feval(fun, xn) - f);
     
     if i > 100 || (dy > dyold && i > 1) || ~isreal(xn)
-        warning('Method failed after %1.0f iterations, solution may be incorrect!!', i-1);
+        warning('Method failed after %1.0f iterations, solution may be incorrect!!', i - 1);
         break
     end
         
     check = ov * abs(xg - xn) / n;
-    xg = xn; % need to update activities
+    xg = xn;
     
 end
 

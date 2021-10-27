@@ -1,4 +1,4 @@
-function [g] = gammas(x, T, Tc)
+function [g] = gammas(x, A, B)
 % x = array of compositions for species 1 [amount in alpha phase, amount in
 % beta phase]
 % T = current temperature
@@ -15,16 +15,9 @@ for i = 1:2 % for each phase
     phase = xs(i, :);
     x1 = phase(1);
     x2 = phase(2);
-
-    k = (x1 * (1 + x2)) / (x2 * (1 + x1));
-    a = (Tc * (x1 + x2*k)^3) / (2*x1*x2*k^2);
-    b = a*k;
-
-    A = a./T;
-    B = b./T;
     
-    g(i, 1) = exp(A / (1 + (A*x1) / (B*x2))^2); % g1
-    g(i, 2) = exp(B / (1 + (B*x2) / (A*x1))^2); % g2
+    g(i, 1) = exp(A / (1 + ((A*x1) / (B*x2)))^2); % g1
+    g(i, 2) = exp(B / (1 + ((B*x2) / (A*x1)))^2); % g2
 
 end
 

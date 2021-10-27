@@ -1,5 +1,5 @@
 function [x] = gelim(a)
-
+% UPDATE TO ALSO RETURN INVERSE?
 % Checking dimensions
 
 mn=size(a);

@@ -6,7 +6,7 @@ function jb = jacob(f, xg, h)
 % jb = Jacobian matrix
 
 n = length(xg);
-jb = zeros(n, n);
+jb = zeros(n);
 
 for j = 1:n
     hs = zeros(n, 1);
