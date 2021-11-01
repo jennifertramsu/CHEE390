@@ -1,4 +1,7 @@
 function y = residual(x, A, B)
+% x = array of compositions
+% A = 
+% B = 
 
 xa1 = x(1);
 xb1 = x(2);

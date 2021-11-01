@@ -45,8 +45,10 @@ a(:,n) = []; % Erasing constant matrix
 
 % RCON Check
 
-if rcon(a) <= eps
-    warning('RCON is less than eps! Result may be inaccurate.')
+rc = rcon(a);
+
+if rc < eps || abs(rc) == inf || isnan(rc) 
+    warning('Matrix might be singular and results inaccurate. RCOND = %8.6e.',rc)
 end
 
 % Back Substitution

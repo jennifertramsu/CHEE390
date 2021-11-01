@@ -18,7 +18,7 @@ xg = xg(:);
 while tol < check
     i = i + 1;
     j = jacob(fun, xg, h);
-    f = feval(fun, xg);  
+    f = feval(fun, xg);
     xn = xg - invgjp(j, f);
     
     dy = ov * abs(feval(fun, xn) - f);
