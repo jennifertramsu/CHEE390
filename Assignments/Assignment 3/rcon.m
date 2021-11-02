@@ -1,7 +1,7 @@
-function r = rcon(a)
+function r = rcon(a, inv)
 
 norm = max(sum(abs(a)));
-norminv = max(sum(abs(inverse(a))));
+norminv = max(sum(abs(inv)));
 
 r = 1 / (norm * norminv);
 

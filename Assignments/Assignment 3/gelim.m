@@ -1,16 +1,18 @@
-function [x] = gelim(a)
-% UPDATE TO ALSO RETURN INVERSE?
+function [x, inv] = gelim(a)
 % Checking dimensions
 
-mn=size(a);
-m=mn(1);
-n=mn(2);
+[m, n] = size(a);
 
 if n ~= m+1 % Because last column is constant matrix
-    error('a matrix is not square')
+    error('Matrix is not square!')
 end
 
-% Performing elimination
+% Appending identity matrix
+id = eye(m);
+
+a = [a id]; % matrix | constant matrix | identity matrix
+
+%% Performing elimination
 
 s = max(abs(a(:, 1:m)), [], 2); % Max value
 
@@ -38,20 +40,26 @@ for k = 1:m-1
     end
 end
 
+%% Separate vector b and the transformed identity matrix 
 % Separate matrix a from vector b
 
 b = a(:,n);
-a(:,n) = []; % Erasing constant matrix
+a(:,n) = []; % Erasing constant matrix, what's leftover is matrix and transformed identity
+
+% Calculating inverse
+inv = inverse(a);
+
+a(:, m + 1:end) = []; % Retrieving REF
 
 % RCON Check
 
-rc = rcon(a);
+rc = rcon(a, inv);
 
 if rc < eps || abs(rc) == inf || isnan(rc) 
     warning('Matrix might be singular and results inaccurate. RCOND = %8.6e.',rc)
 end
 
-% Back Substitution
+%% Back Substitution
 
 x = zeros(m, 1);
 

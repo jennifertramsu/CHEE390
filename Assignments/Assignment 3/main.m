@@ -39,8 +39,6 @@ for t = 2:length(T)
     
 end
 
-S
-
 %% Plotting
 
 figure(1)

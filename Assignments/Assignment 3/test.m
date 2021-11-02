@@ -1,14 +1,14 @@
-xg = [1, 1];
+clear
+clc
 
-newtonrm(@(x)fun(x), xg, 1e-2, 1e-12)
+% a = [1 1 1 6; 2 -1 -1 -3; -2 -2 2 0];
+% [x, inv] = gelim(a);
 
-function f = fun(x)
+% a = [0 -1 0; 1 1 0];
+% [x, inv] = gelim(a);
 
-x1 = x(1);
-x2 = x(2);
+a = [0.0001 1 1; 1 1 2];
+[x, inv] = gelim(a);
 
-f = [x2 - x1;
-    x1^2 + x2^2-25;
-    ];
-
-end
+x
+inv

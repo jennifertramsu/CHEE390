@@ -1,47 +1,8 @@
-function inv = inverse(a)
+function inv = inverse(ma)
 
-% Checking dimensions
+[m, ~] = size(ma);
 
-mn=size(a);
-m=mn(1);
-n=mn(2);
-
-if m ~= n
-    error('a matrix is not square')
-end
-
-% Append identity matrix
-id = eye(m);
-
-a = [a id];
-
-% Performing elimination
-
-s = max(abs(a(:, 1:m)), [], 2); % Max value
-
-for k = 1:m-1
-    % Scaled Row Pivoting
-    si = s(k);
-    rmax = abs(a(k, k))/si;
-    row = k;
-    
-    for j = k + 1:m
-        r = abs(a(j, k))/si;
-        if r > rmax
-            rmax = r;
-            row = j;
-        end
-    end
-    
-   % Swap rows
-    a = swapr(a, k, row);
-    s = swapr(s, k, row);
-    
-    for i = k + 1:m
-        p = a(i, k) / a(k, k); % Multiplier
-        a(i, :) = a(i, :) - a(k, :) * p;
-    end
-end
+a = ma(:, :); % Making a copy
 
 % Divide each row by the pivot value to obtain a leading one in each row
 
