@@ -31,6 +31,7 @@ xg = [xg(1) - dx, xg(2) + dx];
 for t = 2:length(T)
     
     r = @(x) residual(x, A(t), B(t));
+    feval(r, xg)
     [xn, i] = newtonrm(r, xg, 1e-2, 1e-12);
     y = feval(r, xn);
     S(t, :) = [T(t) - 273.15, xn', y', i]; % Converting temperature to deg C
