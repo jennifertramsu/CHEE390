@@ -1,5 +1,5 @@
 function jb = jacob(f, xg, h)
-% Calculates the Jacobian for a non-linear set of equations
+% Calculates the Jacobian for a nonlinear system
 % f = vector of functions
 % xg = initial guess for each function
 % h = small step

@@ -1,20 +1,22 @@
 % Ngan Jennifer Tram Su [260923530]
 
+% Instructions to Run: Press Run
+
 clear
 clc
 
-% Main Program - Plotting Van Laar activity coefficients
+% Main Program - Plotting Equilibrium Immiscibility Limits
 
 %% Initialization
 
 Tc = 125 + 273.15; % K
 T = linspace(Tc, 20 + 273.15, 500); % decreasing from 125 to 20 deg C
-S = zeros(length(T), 6);
+S = zeros(length(T), 6); % [T xa1 xb1 f g i]
 xg = [0.37, 0.37];
 dx = 0.02;
 
-k = (xg(1) * (1 + (1 - xg(2)))) / ((1 - xg(2)) * (1 + xg(1)));
-a = (Tc * (xg(1) + (1 - xg(2))*k)^3) / (2*xg(1)*(1 - xg(2))*k^2);
+k = (xg(1) * (1 + (1 - xg(1)))) / ((1 - xg(1)) * (1 + xg(1)));
+a = (Tc * (xg(1) + (1 - xg(1))*k)^3) / (2*xg(1)*(1 - xg(1))*k^2);
 b = a*k;
 
 A = a ./ T;
@@ -23,16 +25,15 @@ B = b ./ T;
 r = @(x) residual(x, A(1), B(1));
 y = feval(r, xg);
 
-S(1, :) = [T(1) - 273.15, xg, y', 1];
-xg = [xg(1) - dx, xg(2) + dx];
+S(1, :) = [T(1) - 273.15, xg, y', 1]; % Storing known point
+xg = [xg(1) - dx, xg(2) + dx]; % New guess
 
 %% Iterate over temperature to obtain new Van Laars constants
 
 for t = 2:length(T)
     
     r = @(x) residual(x, A(t), B(t));
-    feval(r, xg)
-    [xn, i] = newtonrm(r, xg, 1e-2, 1e-12);
+    [xn, i] = newtonrm(r, xg, 1e-3, 1e-12);
     y = feval(r, xn);
     S(t, :) = [T(t) - 273.15, xn', y', i]; % Converting temperature to deg C
     xg = xn; % Zero-order continuation
@@ -40,6 +41,7 @@ for t = 2:length(T)
 end
 
 %% Plotting
+% Phillip Servio (c) 2021
 
 figure(1)
 

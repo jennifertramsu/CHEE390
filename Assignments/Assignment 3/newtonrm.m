@@ -1,7 +1,15 @@
 function [xn, i] = newtonrm(fun, xg, h, tol)
-% Phillip Servio (c) 
+% Phillip Servio (c) 2013
 % Newton-Raphson method for calculating solution to nonlinear set of
 % equations
+% fun = vector of functions
+% xg = array of initial guesses for each variable of interest
+% h = small step for Jacobian
+% tol = tolerance
+% xn = array of new guess
+% i = number of iterations
+
+%% Initialization
 
 i = 0;
 check = 1;
@@ -19,7 +27,7 @@ while tol < check
     i = i + 1;
     j = jacob(fun, xg, h);
     f = feval(fun, xg);
-    xn = xg - invgjp(j, f);
+    xn = xg - gelim(j, f);
     
     dy = ov * abs(feval(fun, xn) - f);
     

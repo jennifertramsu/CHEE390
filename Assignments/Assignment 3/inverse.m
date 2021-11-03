@@ -1,8 +1,12 @@
 function inv = inverse(ma)
+% Given the REF of a matrix and the transformed identity matrix, performs
+% Jordan elimination and returns the resulting inverse
+% ma = matrix with appended transformed identity from Gaussian Elimination
+% inv = inverse
 
 [m, ~] = size(ma);
 
-a = ma(:, :); % Making a copy
+a = ma(:, :); % Making a copy, scope is weird
 
 % Divide each row by the pivot value to obtain a leading one in each row
 
@@ -19,6 +23,6 @@ for k = m:-1:1
     end
 end
 
-inv = a(:, m + 1:end);
+inv = a(:, m + 1:end); % Separate resulting inverse from the RREF
 
 end

@@ -1,11 +1,24 @@
-function [x, inv] = gelim(a)
+function [x, inv] = gelim(a, b)
+% Performs Gaussian Elimination given a matrix and a constant matrix, returns the
+% solution and the inverse
+% Also calculates the RCON number and warns the user of an ill-defined matrix
+% a = matrix
+% b = constant matrix
+% x = solution
+% inv = inverse of a
+
 % Checking dimensions
 
 [m, n] = size(a);
 
-if n ~= m+1 % Because last column is constant matrix
+if n ~= m % Because last column is constant matrix
     error('Matrix is not square!')
 end
+
+% Storing norm
+norm = max(sum(abs(a)));
+
+a = [a b]; % Creating augmented matrix
 
 % Appending identity matrix
 id = eye(m);
@@ -43,17 +56,18 @@ end
 %% Separate vector b and the transformed identity matrix 
 % Separate matrix a from vector b
 
-b = a(:,n);
-a(:,n) = []; % Erasing constant matrix, what's leftover is matrix and transformed identity
+b = a(:, n + 1);
+a(:, n + 1) = []; % Erasing constant matrix, what's leftover is matrix and transformed identity
 
 % Calculating inverse
 inv = inverse(a);
 
-a(:, m + 1:end) = []; % Retrieving REF
+a(:, n + 1:end) = []; % Retrieving REF
 
 % RCON Check
+norminv = max(sum(abs(inv)));
 
-rc = rcon(a, inv);
+rc = 1 / (norm * norminv);
 
 if rc < eps || abs(rc) == inf || isnan(rc) 
     warning('Matrix might be singular and results inaccurate. RCOND = %8.6e.',rc)
