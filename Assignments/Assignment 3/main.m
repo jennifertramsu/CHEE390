@@ -26,7 +26,7 @@ r = @(x) residual(x, A(1), B(1));
 y = feval(r, xg);
 
 S(1, :) = [T(1) - 273.15, xg, y', 1]; % Storing known point
-xg = [xg(1) - dx, xg(2) + dx]; % New guess
+xg = [xg(1) - dx, xg(2) + dx]; % New guess; changed initial guesses here for report
 
 %% Iterate over temperature to obtain new Van Laars constants
 
