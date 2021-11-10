@@ -1,4 +1,4 @@
-function a = simpson(y, p)
+function a = simpson(y, a, b, p)
 % Simpson's Rule for integration
 % y = vector
 % p = number of points (p - 1 intervals)
@@ -10,7 +10,7 @@ if mod(p, 2) == 0
 end
 
 %% Initialization
-h = (y(end)- y(1)) / (p - 1);
+h = (b - a) / (p - 1);
 even = 0;
 odd = 0;
 

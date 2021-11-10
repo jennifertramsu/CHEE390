@@ -11,12 +11,9 @@ clc
 p = 1e3; % kg/m^3
 mu = 1e-3; % Pa s
 B = 1e-3; % m 
-%vo = input('Please input the velocity at y = 0 (m/s): ');
-%vb = input('Please input the velocity at y = B (m/s): ');
-%dpdx = input('Please input the pressure gradient (Pa/m): ');
-vo = 4e-5;
-vb = 1e-4;
-dpdx = -1;
+vo = input('Please input the velocity at y = 0 (m/s): ');
+vb = input('Please input the velocity at y = B (m/s): ');
+dpdx = input('Please input the pressure gradient (Pa/m): ');
 
 %% Initialization
 n = 50;
@@ -50,13 +47,19 @@ v = thomas(a, b, c, d);
 v = [vo v vb]; % Appending boundary conditions
 
 % Crappy Plotting
-%y = linspace(0, B, n+1);
-%plot(y, v);
+y = linspace(0, B, n+1);
+plot(y, v);
 
 %% Calculating Average Velocity
 
 % After some simplification, v_av = integral(vx) dy / B
 
-v_av = simpson(v, n+1) / B;
+v_av = simpson(v, 0, B, n+1) / B;
 
 fprintf('The average velocity is %.3e m/s.\n', v_av);
+
+%% Calculating Reynold's number
+
+Re = p*v_av*B/mu;
+
+fprintf('The Reynold''s numbers is %.5f.\n', Re);
