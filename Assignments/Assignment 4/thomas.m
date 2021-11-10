@@ -1,8 +1,7 @@
 function [x] = thomas(a, b, c, d)
 % Thomas Algorithm to solve tridiagonal matrices
-% Phillip Servio (c)
-
-% a, b, c, d = row vectors 
+% Phillip Servio (c) 2010
+% a, b, c, d = coefficient vectors
 % x = solution
 
 % Initializing

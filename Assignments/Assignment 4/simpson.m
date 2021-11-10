@@ -1,6 +1,7 @@
 function a = simpson(y, a, b, p)
 % Simpson's Rule for integration
-% y = vector
+% y = vector of function output
+% a, b = limits of integration
 % p = number of points (p - 1 intervals)
 % a = computed integral
 

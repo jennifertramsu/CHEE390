@@ -3,6 +3,9 @@
 % undergoing laminar, pressure-driven flow between two infinite parallel
 % flat plates separated by a distance B
 
+% Instructions to run: Press Run, and input vo, vb, and dpdx in command
+% window as prompted
+
 clear
 clc
 
@@ -46,9 +49,9 @@ v = thomas(a, b, c, d);
 
 v = [vo v vb]; % Appending boundary conditions
 
-% Crappy Plotting
-y = linspace(0, B, n+1);
-plot(y, v);
+%% Crappy Plotting
+% y = linspace(0, B, n+1);
+% plot(y, v);
 
 %% Calculating Average Velocity
 
