@@ -21,15 +21,15 @@ z = [0.1, 0.9];
 N = length(z); % Number of species
 z = z ./ (z * ones(N, 1)); % Normalize z
 
-theta = zeros(1, length(P));
-
 %% Calculating Mixing Parameters at Critical Point
 ac = 0.45724 * R^2 .* Tc.^2 ./ Pc;
 b = 0.07780 * R * Tc ./ Pc;
 
 %% Read in pressure and temperature
-P = linspace(689476, 6.895e6, 500);
+P = linspace(Pc(1), Pc(2), 500);
 T = 310.928; % K
+
+theta = zeros(1, length(P));
 
 %% Calculate Mixing Parameters for All Other Points
 const = 0.37464 + 1.54226*w - 0.26992*w.^2;
@@ -64,8 +64,8 @@ for p = 1:length(P)
     y = K .* x;
     
     % Normalizing x and y
-    x = x ./ (x * ones(length(x), 1));
-    y = y ./ (y * ones(length(y), 1));
+    x = x ./ (x * ones(N, 1));
+    y = y ./ (y * ones(N, 1));
     
     bv = (y.*b) * ones(N, 1);
     bl = (x.*b) * ones(N, 1);
@@ -81,21 +81,20 @@ for p = 1:length(P)
     end
     
     %% Solving for molar volumes of each species
+    [Zv, Av, Bv] = roots(@(Z)pengr(Z, av, bv, T, P(p)));
+    [Zl, Al, Bl] = roots(@(Z)pengr(Z, al, bl, T, P(p)));
     
-    % ? what
-    V = ...;
+    Zv = max(Zv);
+    Zl = min(Zl);
     
-    vv = max(V); % Vapour volume is largest root
-    vl = min(V); % Liquid volume is smallest root
+    vv = Zv*R*T/P(p);
+    vl = Zl*R*T/P(p);
     
     %% Fugacities
-    
-    % stuff
-    fv = ...;
-    fl = ...;
+    fv = fugacity(x, av, bv, Zv, Av, Bv, k);
+    fl = fugacity(x, al, bl, Zl, Al, Bl, k);
     
     theta(k) = (y .* log(fv ./ fl)) * ones(N, 1);
     
-    % I have no idea what's happening after this point
     
 end
