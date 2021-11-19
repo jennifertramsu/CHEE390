@@ -49,10 +49,6 @@ v = thomas(a, b, c, d);
 
 v = [vo v vb]; % Appending boundary conditions
 
-%% Crappy Plotting
-% y = linspace(0, B, n+1);
-% plot(y, v);
-
 %% Calculating Average Velocity
 
 % After some simplification, v_av = integral(vx) dy / B
@@ -66,3 +62,30 @@ fprintf('The average velocity is %.3e m/s.\n', v_av);
 Re = p*v_av*B/mu;
 
 fprintf('The Reynold''s numbers is %.5f.\n', Re);
+
+%% Crappy Plotting
+y = linspace(0, B, n+1);
+
+figure(1)
+
+plot(y, v);
+
+hold on 
+stem(y, v, 'Marker', '.', 'Color', [0.9290 0.6940 0.1250])
+hold off
+
+hold on
+yline(v_av, 'LineStyle', ':', 'Color', 'blue', 'LineWidth', 1);
+text(dx, v_av + dx/2, ['V_{avg} = ', num2str(v_av, '%.3e')]);
+text(dx, v_av - dx/2, ['Re = ', num2str(Re, '%.5f')]);
+hold off
+
+xlabel('y (m)');
+ylabel('V_x(y) (m/s)');
+yLim = get(gca,'YLim');
+
+if min(v) > 0
+    set(gca,'YLim', [0 yLim(2)]);
+else
+    set(gca,'YLim', [min(v) yLim(2)]);
+end

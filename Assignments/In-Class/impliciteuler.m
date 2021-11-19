@@ -1,4 +1,4 @@
-function [y] = impliciteuler(func, yi, b, n, h, tol)
+function [y] = impliciteuler(func, yi, n, h, tol)
 % Implicit Backwards Euler
 % func = % stacked function vector
 % yg = array of initial guesses
@@ -13,12 +13,13 @@ m = length(yi);
 y = zeros(m, n);
 
 y(:, 1) = yi(:);
+% if making x separate, update h
+% h = diff(x);
 
 for i = 1:n-1
     k = 0;
-    yg = y(:, i) + h;
+    yg = y(:, i);
     check = 1;
-    dfold = 1e10;
     ov = ones(1, m);
     
     r = @(yf)residual(func, y(:, i), yf, h);
@@ -27,18 +28,16 @@ for i = 1:n-1
         
         k = k + 1;
         rv = r(yg); % Evaluate residual vector
-        jf = jacob(func, yg, h); % Compute Jacobian of function (jf)
+        jf = jacob(func, yg); % Compute Jacobian of function (jf)
         jr = eye(m) - jf; % Get Residual Jacobian by identity - jf
         yn = yg - gelim(jr, rv); % Generate new guess
-        
-        df = ov * abs(r(yn) - rv);
-        
-        if k > 100 || (df > dfold && k > 1) || ~isreal(yn)
+
+        if k > 100
             warning('Method failed after %1.0f iterations, solution may be incorrect!!', k - 1);
             break
         end
 
-        check = ov * abs(yn - y(:, i)) / m;
+        check = ov * abs(yn - yg) / m;
         yg = yn;
         
     end

@@ -15,7 +15,11 @@ f = @(C)dc(C, Ca0, k, t1, t2);
 
 %[xs, sol] = butcher([0, 0, 0, 0, 0]', f, 0, 10, 51);
 
-ct = trapezoid(f, [0, 0, 0, 0, 0]', 10, 1001, 1e-2, 1e-12);
+% make x separate
+% for now, if integrating backwards, make h negative
+
+ct = impliciteuler(f, zeros(5, 1), 10001, 1e-3, 1e-12);
+ct = impliciteuler(f, ct(:, end), 10001, -1e-3, 1e-12);
 ct = ct';
 
 %% Plotting

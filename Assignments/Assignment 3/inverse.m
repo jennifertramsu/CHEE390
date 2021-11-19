@@ -19,7 +19,7 @@ end
 for k = m:-1:1
     for j = k - 1:-1:1
         p = a(j, k) / a(k, k);
-        a(j, :) = a(j, :) - a(k, :) * p;
+        a(j, :) = (a(j, :) - a(k, :) * p);
     end
 end
 

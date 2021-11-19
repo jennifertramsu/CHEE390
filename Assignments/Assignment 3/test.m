@@ -7,8 +7,9 @@ clc
 % a = [0 -1 0; 1 1 0];
 % [x, inv] = gelim(a);
 
-a = [0.0001 1 1; 1 1 2];
-[x, inv] = gelim(a);
+a = [0.0001 1; 1 1];
+b = [1;2];
+[x, inv] = gelim(a, b);
 
 x
 inv

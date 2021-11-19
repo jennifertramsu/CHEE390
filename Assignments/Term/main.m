@@ -1,32 +1,35 @@
 % Ngan Jennifer Tram Su
 % 260923530
 
-% 1 = isobutane
-% 2 = carbon dioxide
+clear
+clc
+
+% 1 = carbon dioxide
+% 2 = isobutane
 
 %% Initialization
 R = 8.314; % m3 Pa K−1 mol−1
-Tc = [407.7, 304.13]; % K
-Pc = [3650e3, 7.3773e6]; % Pa;
+Tc = [304.13, 407.7]; % K
+Pc = [7.3773e6, 3650e3]; % Pa;
 
 % http://www.kaylaiacovino.com/Petrology_Tools/Critical_Constants_and_Acentric_Factors.htm
-w = [0.183, 0.239];
+w = [0.239, 0.183];
 
 k = [
     0 0.130;
     0.130 0
     ]; % Interaction parameters
 
-z = [0.1, 0.9];
+z = [0.5, 0.5];
 N = length(z); % Number of species
 z = z ./ (z * ones(N, 1)); % Normalize z
 
 %% Calculating Mixing Parameters at Critical Point
-ac = 0.45724 * R^2 .* Tc.^2 ./ Pc;
+ac = 0.45724 * R^2 * Tc.^2 ./ Pc;
 b = 0.07780 * R * Tc ./ Pc;
 
 %% Read in pressure and temperature
-P = linspace(Pc(1), Pc(2), 500);
+P = linspace(Pc(2), Pc(1), 500);
 T = 310.928; % K
 
 theta = zeros(1, length(P));
@@ -37,7 +40,8 @@ dima = sqrt(1 + const.*(1 - sqrt(T./Tc))); % Dimensionless parameter to determin
 a = ac .* dima;
 
 %% Guess initial K-factors
-K = wilson(Pc, P(1), Tc, T, w);
+K = zeros(length(P), N);
+K(1, :) = wilson(Pc, P(1), Tc, T, w);
 
 %% Iteration
 
@@ -46,7 +50,7 @@ for p = 1:length(P)
     r = @(v) vapfrac(v, z, K);
     
     if sign(r(0)*r(1)) <= 0
-        alp = newtonrm(r, 0.5, 1e-3, 1e-12);
+        alp = newtonrm(r, 1, 1e-3, 1e-12);
         nphase = 2;
     elseif r(0) <= 0
         alp = 0;
@@ -60,8 +64,8 @@ for p = 1:length(P)
     end
     
     %% Solving for vapour and liquid compositions
-    x = z ./ (1 + alp.*(K - 1));
-    y = K .* x;
+    x = z ./ (1 + alp.*(K(p, :) - 1));
+    y = K(p, :) .* x;
     
     % Normalizing x and y
     x = x ./ (x * ones(N, 1));
@@ -75,14 +79,21 @@ for p = 1:length(P)
     
     for i = 1:N
         for j = 1:N
-            av = av + y(i)*y(j)*sqrt(a(i)*a(j))*(1 - K(i, j));
-            al = al + x(i)*x(j)*sqrt(a(i)*a(j))*(1 - K(i, j));
+            av = av + y(i)*y(j)*sqrt(a(i)*a(j))*(1 - k(i, j));
+            al = al + x(i)*x(j)*sqrt(a(i)*a(j))*(1 - k(i, j));
         end
     end
     
-    %% Solving for molar volumes of each species
-    [Zv, Av, Bv] = roots(@(Z)pengr(Z, av, bv, T, P(p)));
-    [Zl, Al, Bl] = roots(@(Z)pengr(Z, al, bl, T, P(p)));
+    %% Solving for molar volumes of each species --- need to check if roots are real
+    Av = av*P(p) / (R*T)^2;
+    Bv = bv*P(p) / (R*T);
+    r1 = [1, -(1 - Bv), Av - 3*Bv^2 - 2*Bv, -(Av*Bv - Bv^2 - Bv^3)];    
+    Zv = roots(r1);
+    
+    Al = al*P(p) / (R*T)^2;
+    Bl = bl*P(p) / (R*T);
+    r2 = [1, -(1 - Bl), Al - 3*Bl^2 - 2*Bl, -(Al*Bl - Bl^2 - Bl^3)];    
+    Zl = roots(r2);
     
     Zv = max(Zv);
     Zl = min(Zl);
@@ -91,10 +102,34 @@ for p = 1:length(P)
     vl = Zl*R*T/P(p);
     
     %% Fugacities
-    fv = fugacity(x, av, bv, Zv, Av, Bv, k);
-    fl = fugacity(x, al, bl, Zl, Al, Bl, k);
+    fv = fugacity(x, a, b, Zv, Av, Bv, k, P(p));
+    fl = fugacity(y, a, b, Zl, Al, Bl, k, P(p));
     
-    theta(k) = (y .* log(fv ./ fl)) * ones(N, 1);
+    theta(p) = (y .* log(fv ./ fl)) * ones(N, 1);
     
+    if theta(p) <= 1e-7
+        % flash converged!
+        return
+    else
+        if p == 1
+            K(p + 1, :) = K(p, :) .* (fl./fv);
+        else
+            if abs(theta(p) - theta(p - 1)) <= 1e-8
+                if theta(p) > 0
+                    if alp ~= 0
+                        alert('should be liquid');
+                    end
+                else
+                    if alp ~= 1
+                        alert('should be vapour');
+                    end
+                end
+            end                    
+        end
+        
+        if nphase ~= 2 
+            K(p + 1, :) = K(p, :) .* exp(theta(p));
+        end
+    end
     
 end

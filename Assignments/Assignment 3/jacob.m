@@ -7,11 +7,12 @@ function jb = jacob(f, xg, h)
 
 n = length(xg);
 jb = zeros(n);
+hs = zeros(n, 1);
 
 for j = 1:n
-    hs = zeros(n, 1);
     hs(j) = h;
     jb(:, j) = d5(f, xg, hs) / (12 * h); % 5-pt Stencil
+    hs(j) = 0; % Resetting to zero
 end
 
 end
