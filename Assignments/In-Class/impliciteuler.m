@@ -29,7 +29,7 @@ for i = 1:n-1
         k = k + 1;
         rv = r(yg); % Evaluate residual vector
         jf = jacob(func, yg); % Compute Jacobian of function (jf)
-        jr = eye(m) - jf; % Get Residual Jacobian by identity - jf
+        jr = eye(m) - h*jf; % Get Residual Jacobian by identity - jf
         yn = yg - gelim(jr, rv); % Generate new guess
 
         if k > 100
