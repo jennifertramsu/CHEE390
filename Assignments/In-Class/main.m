@@ -5,23 +5,26 @@ clc
 
 %% Initialization
 
-k = 0.2; % min^-1
-t1 = 5; % min
-t2 = 7; % min
-Ca0 = 25; % mol/L
+k = 0.2; % min^-1, rate constant
+t1 = 5; % min, residence time
+t2 = 7; % min, residence time
+Ca0 = 25; % mol/L, feed concentration
 
 f = @(C)dc(C, Ca0, k, t1, t2);
 
-% if integrating backwards, make h negative
+c0 = [0 0 0 0 0]'; % Initial concentrations
 
-%ct = butcher(zeros(5, 1), f, 0, 10, 10);
+dx = 1e-3; % Step size
+t0 = 0; % Initial time
+tf = 10; % Final time
 
-% initialize time vector -- have more control over the bounds of
-% integration
+%% put everything in one function !!
 
-t = linspace(0, 10, 50);
+t = t0:dx:tf;
 
-ct = impliciteuler(f, zeros(5, 1), 10001, 1e-3, 1e-12);
+% [1] euler, [2] trapezoid, [3] Butcher's
+
+ct = rk(f, t, c0, 1e-12, 3);
 ct = ct';
 
 t=ct(:,end);
@@ -56,8 +59,11 @@ species = 1;
 
 mm = quicksortd(ct, 1, length(ct), species);
 
-mm(1, :) % Minimum
-mm(end, :) % Maximum
+min = mm(1, :); % Minimum
+max = mm(end, :); % Maximum
+
+fprintf('For species %d, a minimum of %.5f M is found at time %.2f min.\n', species, min(species), min(end));
+fprintf('For species %d, a maximum of %.5f M is found at time %.2f min.\n', species, max(species), max(end));
 
 %% Steady State
 % Compute the concentration of each species at steady-state
