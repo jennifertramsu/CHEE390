@@ -20,116 +20,90 @@ k = [
     0.130 0
     ]; % Interaction parameters
 
-z = [0.5, 0.5];
+z = [0.01, 0.99]; % doesn't work when # P points is 100 --> step size too large
 N = length(z); % Number of species
 z = z ./ (z * ones(N, 1)); % Normalize z
 
 %% Calculating Mixing Parameters at Critical Point
-ac = 0.45724 * R^2 * Tc.^2 ./ Pc;
-b = 0.07780 * R * Tc ./ Pc;
+ac = 0.45724 * (R*Tc).^2 ./ Pc;
+bp = 0.07780 * (R*Tc) ./ Pc;
 
 %% Read in pressure and temperature
-P = linspace(Pc(2), Pc(1), 500);
+P = linspace(500000, 6.9e6, 1000);
 T = 310.928; % K
-
-theta = zeros(1, length(P));
 
 %% Calculate Mixing Parameters for All Other Points
 const = 0.37464 + 1.54226*w - 0.26992*w.^2;
-dima = sqrt(1 + const.*(1 - sqrt(T./Tc))); % Dimensionless parameter to determine a
-a = ac .* dima;
+dima = (1 + const.*(1 - sqrt(T./Tc))).^2; % Dimensionless parameter to determine a
+ap = ac .* dima;
 
-%% Guess initial K-factors
-K = zeros(length(P), N);
-K(1, :) = wilson(Pc, P(1), Tc, T, w);
+xsol = zeros(length(P), N);
+ysol = zeros(length(P), N);
+psol = zeros(length(P), 1);
 
 %% Iteration
+p = 1;
 
-for p = 1:length(P)
+f = @(z, P, K)flash(z, P, T, k, ap, bp, K);
+
+%% Guess initial K-factors
+K = wilson(Pc, P(1), Tc, T, w);
+dx = 1e-3; % Any smaller and it doesn't converge fast enough
+
+while p <= length(P)
     
-    r = @(v) vapfrac(v, z, K);
-    
-    if sign(r(0)*r(1)) <= 0
-        alp = newtonrm(r, 1, 1e-3, 1e-12);
-        nphase = 2;
-    elseif r(0) <= 0
-        alp = 0;
-        nphase = 1;
-    elseif r(1) >= 0
-        alp = 1;
-        nphase = 1;
-    else
-        % print error message
-        error('what');
+    [x, y, alp, K, err] = f(z, P(p), K);
+%     
+%     if err == 1
+%         % In liquid or vapour
+%         if alp == 1 % all vapour
+%             z = [z(1) - dx, z(2) + dx]; % Reduce system comp of 1
+%         elseif alp == 0 % all liquid
+%             z = [z(1) + dx, z(2) - dx]; % Increase system comp of 1
+%         end
+%         z = z ./ (z * ones(N, 1)); % Normalize z
+%     else
+%         if alp < 0.2
+%             z = [z(1) + dx, z(2) - dx];
+%             z = z ./ (z * ones(N, 1)); % Normalize z
+%         end
+%     end
+
+    if alp < 0.2 && err == 0
+        z = [z(1) + dx, z(2) - dx];
+        z = z ./ (z * ones(N, 1)); % Normalize z
+    elseif err == 1
+        if alp == 1 % all vapour
+            z = [z(1) - dx, z(2) + dx]; % Reduce system comp of 1
+        elseif alp == 0 % all liquid
+            z = [z(1) + dx, z(2) - dx]; % Increase system comp of 1
+        end
+        z = z ./ (z * ones(N, 1)); % Normalize z
     end
+
+    xsol(p, :) = x;
+    ysol(p, :) = y;
+    psol(p) = P(p);
+    p = p + 1;
     
-    %% Solving for vapour and liquid compositions
-    x = z ./ (1 + alp.*(K(p, :) - 1));
-    y = K(p, :) .* x;
-    
-    % Normalizing x and y
-    x = x ./ (x * ones(N, 1));
-    y = y ./ (y * ones(N, 1));
-    
-    bv = (y.*b) * ones(N, 1);
-    bl = (x.*b) * ones(N, 1);
-    
-    av = 0;
-    al = 0;
-    
-    for i = 1:N
-        for j = 1:N
-            av = av + y(i)*y(j)*sqrt(a(i)*a(j))*(1 - k(i, j));
-            al = al + x(i)*x(j)*sqrt(a(i)*a(j))*(1 - k(i, j));
-        end
-    end
-    
-    %% Solving for molar volumes of each species --- need to check if roots are real
-    Av = av*P(p) / (R*T)^2;
-    Bv = bv*P(p) / (R*T);
-    r1 = [1, -(1 - Bv), Av - 3*Bv^2 - 2*Bv, -(Av*Bv - Bv^2 - Bv^3)];    
-    Zv = roots(r1);
-    
-    Al = al*P(p) / (R*T)^2;
-    Bl = bl*P(p) / (R*T);
-    r2 = [1, -(1 - Bl), Al - 3*Bl^2 - 2*Bl, -(Al*Bl - Bl^2 - Bl^3)];    
-    Zl = roots(r2);
-    
-    Zv = max(Zv);
-    Zl = min(Zl);
-    
-    vv = Zv*R*T/P(p);
-    vl = Zl*R*T/P(p);
-    
-    %% Fugacities
-    fv = fugacity(x, a, b, Zv, Av, Bv, k, P(p));
-    fl = fugacity(y, a, b, Zl, Al, Bl, k, P(p));
-    
-    theta(p) = (y .* log(fv ./ fl)) * ones(N, 1);
-    
-    if theta(p) <= 1e-7
-        % flash converged!
-        return
-    else
-        if p == 1
-            K(p + 1, :) = K(p, :) .* (fl./fv);
-        else
-            if abs(theta(p) - theta(p - 1)) <= 1e-8
-                if theta(p) > 0
-                    if alp ~= 0
-                        alert('should be liquid');
-                    end
-                else
-                    if alp ~= 1
-                        alert('should be vapour');
-                    end
-                end
-            end                    
-        end
-        
-        if nphase ~= 2 
-            K(p + 1, :) = K(p, :) .* exp(theta(p));
-        end
+    if z(1) == 0
+        z(1) = 0.01 + dx;
+        z = z ./ (z * ones(N, 1)); % Normalize z
     end
     
 end
+
+%% Crappy Plotting
+
+figure(1)
+
+xlabel('Composition of Carbon Dioxide')
+ylabel('Pressure (Pa)')
+
+hold on
+
+plot(xsol(:, 1), psol);
+plot(ysol(:, 1), psol);
+
+hold off
+

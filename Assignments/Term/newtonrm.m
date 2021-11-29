@@ -1,44 +1,29 @@
-function [xn, i] = newtonrm(fun, xg, h, tol)
-% Phillip Servio (c) 2013
-% Newton-Raphson method for calculating solution to nonlinear set of
-% equations
-% fun = vector of functions
-% xg = array of initial guesses for each variable of interest
-% h = small step for Jacobian
-% tol = tolerance
-% xn = array of new guess
-% i = number of iterations
+function [xn, nrfail] = newtonrm(fun, xg, xl, xr, tol)
+% Newton Raphson method for calculating root in the interval xrg = [x1 xr]
+% xg = guess, point where straight line connecting end-points crosses the x-axis
+% xl = left
+% xr = right
 
-%% Initialization
-
-i = 0;
-check = 1;
-n = length(xg);
-dyold = 1e10;
-ov = ones(1, n);
-
-% Forcing xg to be a column vector
-
-xg = xg(:);
+i=0; % Counter, usually 10
+nrfail=0; % Flag, calls another method to verify that point is root or singularity
+check=1; % To get inside the while loop
+h=1e-4; % Never any bigger
 
 % Loop
 
 while tol < check
-    i = i + 1;
-    j = jacob(fun, xg, h);
-    f = feval(fun, xg);
-    xn = xg - gelim(j, f);
-    
-    dy = ov * abs(feval(fun, xn) - f);
-    
-    if i > 100 || (dy > dyold && i > 1) || ~isreal(xn)
-        warning('Method failed after %1.0f iterations, solution may be incorrect!!', i - 1);
-        break
+    i=i+1;
+    fp=d5(fun,xg,h) / (12*h);
+    y=feval(fun,xg);
+    xn=xg-y/fp; % xn = new guess, where slope intersects the x-axis
+  
+    if abs(xn) <= 1 % Otherwise, check will blow up bc small denominator
+        check=abs(xg-xn); % Absolute error
+    else
+        check=abs(1-xg/xn); % Relative error
     end
-        
-    check = ov * abs(xg - xn) / n;
-    xg = xn;
     
+    xg=xn; % Update guess
 end
 
 end

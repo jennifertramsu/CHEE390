@@ -1,17 +1,15 @@
-function [fk] = fugacity(x, ak, bk, Z, A, B, k, P)
+function [fk] = fugacity(c, a, b, ak, bk, Z, A, B, P, kap)
+% Calculates the fugacity of all species
 
-Xa = (x.*ak) * ones(length(x), 1);
-b = (x.*bk) * ones(length(bk), 1);
-a = 0;
+Xa = zeros(1, length(c));
 
-for i = 1:length(k)
-    for j = 1:length(k(:, i))
-        aij = (1 - k(i, j))*sqrt(ak(i)*ak(j));
-        a = a + x(i)*x(j)*aij;
+for k = 1:length(c)
+    for i = 1:length(c)
+        Xa(k) = Xa(k) + (c(i)*(1 - kap(i, k)) * sqrt(ak(i) * ak(k)));
     end
 end
 
-ln = (bk./b).*(Z - 1) - log(Z - B) - A ./ (2*sqrt(2).*B) * (2*Xa./a - bk./b) .* log((Z + 2.414*B) ./ (Z - 0.414.*B));
-fk = x.*P .* log(ln);
+ln = (bk./b).*(Z - 1) - log(Z - B) - (A / (2*sqrt(2)*B)) .* ((2*Xa)/a - bk./b) * log((Z + 2.414.*B) ./ (Z - 0.414.*B));
+fk = c.*P .* exp(ln);
 
 end
