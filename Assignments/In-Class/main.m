@@ -12,13 +12,12 @@ Ca0 = 25; % mol/L, feed concentration
 
 f = @(C)dc(C, Ca0, k, t1, t2);
 
+% CA1 CB1 CA2 CB2 t
 c0 = [0 0 0 0 0]'; % Initial concentrations
 
 dx = 1e-3; % Step size
 t0 = 0; % Initial time
 tf = 10; % Final time
-
-%% put everything in one function !!
 
 t = t0:dx:tf;
 
@@ -55,7 +54,7 @@ fprintf('At time %.2f min, the concentrations of each species are C_A1 = %.5f M,
 % achieved its maximal or minimal value, if one exists
 % It must also report the values of all other species at that time
 
-species = 1;
+species = 2;
 
 mm = quicksortd(ct, 1, length(ct), species);
 
