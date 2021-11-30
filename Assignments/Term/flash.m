@@ -48,7 +48,7 @@ while counter <= kmax
         end
     end
     
-    %% Solving for molar volumes of each species --- need to check if roots are real
+    %% Solving for molar volumes of each species
     Av = av*P / (R*T)^2;
     Bv = bv*P / (R*T);
     r1 = [1, -(1 - Bv), Av - 3*Bv^2 - 2*Bv, -(Av*Bv - Bv^2 - Bv^3)];
@@ -62,6 +62,14 @@ while counter <= kmax
     Zv = max(Zv);
     Zl = min(Zl);
     
+    if ~isreal(Zv) 
+        r = @(Z) peng(Z, Av, Bv);
+        Zv = bisection(r, 0, 1, 1e-3);
+    elseif ~isreal(Zl)
+        r = @(Z) peng(Z, Al, Bl);
+        Zl = bisection(r, 0, 1, 1e-3);
+    end
+    
     %% Fugacities
     fv = fugacity(y, av, bv, ap, bp, Zv, Av, Bv, P, k);
     fl = fugacity(x, al, bl, ap, bp, Zl, Al, Bl, P, k);
@@ -69,7 +77,7 @@ while counter <= kmax
     thetag = (y .* log(fv ./ fl)) * ones(N, 1);
     
     if abs(thetag) <= 1e-7
-        break
+        break % Flash converged!
     else
         if counter == 1
             K = K .* (fl./fv);
@@ -83,10 +91,11 @@ while counter <= kmax
         end
         
         if nphase ~= 2
-            K = K .* exp(thetag);
+            K = K .* exp(thetag); % Kick up if only one phase
         end
         
     end
+    
     counter = counter + 1;
     thetap = thetag;
  

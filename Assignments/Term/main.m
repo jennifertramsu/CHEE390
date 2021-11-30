@@ -20,7 +20,7 @@ k = [
     0.130 0
     ]; % Interaction parameters
 
-z = [0.01, 0.99]; % doesn't work when # P points is 100 --> step size too large
+z = [0.001, 0.999]; % doesn't work when # P points is 100 --> step size too large
 N = length(z); % Number of species
 z = z ./ (z * ones(N, 1)); % Normalize z
 
@@ -29,7 +29,9 @@ ac = 0.45724 * (R*Tc).^2 ./ Pc;
 bp = 0.07780 * (R*Tc) ./ Pc;
 
 %% Read in pressure and temperature
-P = linspace(500000, 6.9e6, 1000);
+%P = linspace(505980, 6.9e6, 1000);
+%P = linspace(500000, 6.939872e6, 1000);
+P = linspace(506000, 6.93e6, 1000);
 T = 310.928; % K
 
 %% Calculate Mixing Parameters for All Other Points
@@ -53,28 +55,13 @@ dx = 1e-3; % Any smaller and it doesn't converge fast enough
 while p <= length(P)
     
     [x, y, alp, K, err] = f(z, P(p), K);
-%     
-%     if err == 1
-%         % In liquid or vapour
-%         if alp == 1 % all vapour
-%             z = [z(1) - dx, z(2) + dx]; % Reduce system comp of 1
-%         elseif alp == 0 % all liquid
-%             z = [z(1) + dx, z(2) - dx]; % Increase system comp of 1
-%         end
-%         z = z ./ (z * ones(N, 1)); % Normalize z
-%     else
-%         if alp < 0.2
-%             z = [z(1) + dx, z(2) - dx];
-%             z = z ./ (z * ones(N, 1)); % Normalize z
-%         end
-%     end
 
     if alp < 0.2 && err == 0
         z = [z(1) + dx, z(2) - dx];
         z = z ./ (z * ones(N, 1)); % Normalize z
     elseif err == 1
         if alp == 1 % all vapour
-            z = [z(1) - dx, z(2) + dx]; % Reduce system comp of 1
+            z = [z(1) - 2*dx, z(2) + 2*dx]; % Reduce system comp of 1
         elseif alp == 0 % all liquid
             z = [z(1) + dx, z(2) - dx]; % Increase system comp of 1
         end
@@ -87,7 +74,7 @@ while p <= length(P)
     p = p + 1;
     
     if z(1) == 0
-        z(1) = 0.01 + dx;
+        z = [0.01 + dx, 0.99 - dx];
         z = z ./ (z * ones(N, 1)); % Normalize z
     end
     
