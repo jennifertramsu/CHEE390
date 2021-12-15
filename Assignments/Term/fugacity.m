@@ -1,5 +1,13 @@
 function [fk] = fugacity(c, a, b, ak, bk, Z, A, B, P, kap)
 % Calculates the fugacity of all species
+% c = composition
+% a, b = mixture mixing coefficients
+% ak, bk = pure mixing coefficients
+% Z = compressibility factor
+% A, B = constants in PR EOS
+% P = pressure
+% kap = interaction parameters
+% fk = fugacity
 
 Xa = zeros(1, length(c));
 

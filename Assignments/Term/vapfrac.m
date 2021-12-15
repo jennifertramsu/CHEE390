@@ -1,6 +1,6 @@
 function P = vapfrac(v, z, K)
 % Residual function to determine vapour fraction
-% a = vapour fraction
+% v = vapour fraction
 % z = total composition fractions
 % K = K-factors
 % P = residual function

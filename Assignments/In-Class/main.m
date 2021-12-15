@@ -6,24 +6,24 @@ clc
 %% Initialization
 
 k = 0.2; % min^-1, rate constant
-t1 = 5; % min, residence time
-t2 = 7; % min, residence time
+t1 = 3; % min, residence time
+t2 = 5; % min, residence time
 Ca0 = 25; % mol/L, feed concentration
+
+dx = 0.01; % Step size
+t0 = 0; % Initial time
+tf = 92; % Final time
+
+t = t0:dx:tf;
 
 f = @(C)dc(C, Ca0, k, t1, t2);
 
 % CA1 CB1 CA2 CB2 t
-c0 = [0 0 0 0 0]'; % Initial concentrations
-
-dx = 1e-3; % Step size
-t0 = 0; % Initial time
-tf = 10; % Final time
-
-t = t0:dx:tf;
+c0 = [2 5 3 7 t0]'; % Initial concentrations
 
 % [1] euler, [2] trapezoid, [3] Butcher's
 
-ct = rk(f, t, c0, 1e-12, 3);
+ct = rk(f, t, c0, 1e-12, 1);
 ct = ct';
 
 t=ct(:,end);
@@ -70,6 +70,10 @@ fprintf('For species %d, a maximum of %.5f M is found at time %.2f min.\n', spec
 ss = @(C)dc2(C, Ca0, k, t1, t2);
 cg = ct(end, 1:end-1);
 
-ssc = newtonrm(ss, cg, 1e-12);
+[ssc, i] = newtonrm(ss, cg, 1e-12);
 
 fprintf('The steady state concentrations are C_A1 = %.5f M, C_B1 = %.5f M, C_A2 = %.5f M, C_B2 = %.5f M.\n', ssc);
+
+for i = 1:length(t)
+    fprintf('C_A1 = %.6f M, C_B1 = %.6f M, C_A2 = %.6f M, C_B2 = %.6f M.\n, %.5f\n\n', ct(i, :));
+end

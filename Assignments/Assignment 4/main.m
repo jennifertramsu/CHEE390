@@ -44,8 +44,14 @@ end
 [a, b, c, d] = thomasprep(m, n);
 
 % Call Thomas Algorithm
-
+tic
 v = thomas(a, b, c, d);
+toc
+
+% Comparing time elapsed with Gaussian Elimination
+tic
+gelim(m(:, 1:end-1), m(:, end));
+toc
 
 v = [vo v vb]; % Appending boundary conditions
 
@@ -53,39 +59,89 @@ v = [vo v vb]; % Appending boundary conditions
 
 % After some simplification, v_av = integral(vx) dy / B
 
-v_av = simpson(v, 0, B, n+1) / B;
+av = simpson(v, 0, B, n+1) / B;
 
-fprintf('The average velocity is %.3e m/s.\n', v_av);
+fprintf('The average velocity is %.3e m/s.\n', av);
 
 %% Calculating Reynold's number
 
-Re = p*v_av*B/mu;
+Re = p*av*B/mu;
 
 fprintf('The Reynold''s numbers is %.5f.\n', Re);
 
-%% Crappy Plotting
-y = linspace(0, B, n+1);
+%% Plotting
+% Phillip Servio (c) 2021
 
-figure(1)
+x = linspace(0, B, n+1);
 
-plot(y, v);
+ymin=min(v);
 
-hold on 
-stem(y, v, 'Marker', '.', 'Color', [0.9290 0.6940 0.1250])
-hold off
+ymax=max(v);
+
+dym=.05*abs(ymin-ymax);
+
+fh=figure(1);
+
+whitebg('w');
+
+set(fh,'color','w')
+
+AX=plot(x,v,[0 B],[av av],'--b');
+
+xlabel('y (m)','fontsize',10)
+
+ylabel('V_x(y) (m/s)','fontsize',10)
+
+title('Velocity Profile', 'fontsize',12)
+
+%hlegend=legend('V_x','V_{avg}');
+
+%set(hlegend,'fontsize',12,'box','off','orientation','vertical')
+
+set(gca,'box','off','TickDir', 'out')
+
+txt1 = ['V_{avg} = ' (num2str(av,'%10.3e\n')) ' m/s'];
+
+text(0.5e-5,av+dym,txt1,'color','b')
+
+txt2 = ['Re = ' (num2str(Re))];
+
+text(0.5e-5,av-dym,txt2,'color','b')
 
 hold on
-yline(v_av, 'LineStyle', ':', 'Color', 'blue', 'LineWidth', 1);
-text(dx, v_av + dx/2, ['V_{avg} = ', num2str(v_av, '%.3e')]);
-text(dx, v_av - dx/2, ['Re = ', num2str(Re, '%.5f')]);
+
+stem(x,v,'filled','MarkerSize',3);
+
 hold off
 
-xlabel('y (m)');
-ylabel('V_x(y) (m/s)');
-yLim = get(gca,'YLim');
+print(figure(1),'-dpng','-r600','profile')
 
-if min(v) > 0
-    set(gca,'YLim', [0 yLim(2)]);
-else
-    set(gca,'YLim', [min(v) yLim(2)]);
-end
+% %% Crappy Plotting, but I was proud of it
+% y = linspace(0, B, n+1);
+% 
+% figure(1)
+% 
+% plot(y, v);
+% 
+% hold on 
+% stem(y, v, 'Marker', '.', 'Color', [0.9290 0.6940 0.1250])
+% hold off
+% 
+% hold on
+% yline(v_av, 'LineStyle', ':', 'Color', 'blue', 'LineWidth', 1);
+% text(dx, v_av + dx/2, ['V_{avg} = ', num2str(v_av, '%.3e')]);
+% text(dx, v_av - dx/2, ['Re = ', num2str(Re, '%.5f')]);
+% hold off
+% 
+% title('Velocity Profile', 'fontsize', 12);
+% xlabel('y (m)');
+% ylabel('V_x(y) (m/s)');
+% yLim = get(gca,'YLim');
+% 
+% if min(v) > 0
+%     set(gca,'YLim', [0 yLim(2)]);
+% else
+%     set(gca,'YLim', [min(v) yLim(2)]);
+% end
+% 
+% print(figure(1),'-dpng','-r600','profile1')

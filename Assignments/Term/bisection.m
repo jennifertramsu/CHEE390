@@ -1,11 +1,13 @@
-% Ngan Jennifer Tram Su [260923530]
-
 function [rt, bifail, sing] = bisection(func, xl, xr, tol)
 % This function implements the bisection root finding method
 % func = residual function of interest
 % xl = left bound
 % xr = right bound
 % tol = tolerance
+% rt = root
+% bifail = flag for fail
+% sing = flag for singularity
+
 %% Initialization
 yl = feval(func, xl);
 yr = feval(func, xr);
